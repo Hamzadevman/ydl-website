@@ -6,541 +6,402 @@
 <title>YDL — Young Debaters & Leaders</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --navy: #0a1628;
-    --navy-mid: #122040;
-    --navy-light: #1c3260;
-    --gold: #c9a84c;
-    --gold-light: #e8c97a;
-    --gold-pale: #f5e8c4;
-    --cream: #faf7f0;
-    --white: #ffffff;
-    --text-muted: #8a94a6;
-    --border: rgba(201,168,76,0.25);
-    --danger: #c0392b;
-    --success: #1a7a4a;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: 'Josefin Sans', sans-serif;
-    background: var(--navy);
-    color: var(--white);
-    overflow-x: hidden;
-  }
-
-  /* ── SCROLLBAR ── */
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: var(--navy); }
-  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
-
-  /* ── NAVBAR ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.2rem 4rem;
-    background: rgba(10,22,40,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    transition: all 0.3s;
-  }
-  .nav-logo {
-    display: flex; align-items: center; gap: 14px; text-decoration: none;
-  }
-  .nav-emblem {
-    width: 42px; height: 42px;
-    border: 2px solid var(--gold);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.05rem; font-weight: 600;
-    color: var(--gold); letter-spacing: 0.05em;
-    position: relative;
-  }
-  .nav-emblem::before {
-    content: '';
-    position: absolute; inset: 3px;
-    border: 1px solid rgba(201,168,76,0.35);
-    border-radius: 50%;
-  }
-  .nav-brand { display: flex; flex-direction: column; line-height: 1; }
-  .nav-brand-main { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.22em; color: var(--white); }
-  .nav-brand-sub { font-size: 0.6rem; letter-spacing: 0.18em; color: var(--gold); font-weight: 300; margin-top: 2px; }
-  .nav-links { display: flex; align-items: center; gap: 2.5rem; }
-  .nav-links a {
-    text-decoration: none; font-size: 0.72rem; letter-spacing: 0.18em;
-    color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 400;
-    transition: color 0.2s; position: relative;
-  }
-  .nav-links a::after {
-    content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 1px;
-    background: var(--gold); transform: scaleX(0); transition: transform 0.25s;
-  }
-  .nav-links a:hover { color: var(--gold); }
-  .nav-links a:hover::after { transform: scaleX(1); }
-  .nav-btn {
-    background: transparent; border: 1px solid var(--gold); color: var(--gold);
-    padding: 0.55rem 1.4rem; font-family: 'Josefin Sans', sans-serif;
-    font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
-    cursor: pointer; transition: all 0.25s; font-weight: 600;
-  }
-  .nav-btn:hover { background: var(--gold); color: var(--navy); }
-  #nav-delegate-btn { display: none; }
-
-  /* ── HERO ── */
-  #hero {
-    min-height: 100vh;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    position: relative; text-align: center; padding: 8rem 2rem 4rem;
-    overflow: hidden;
-  }
-  .hero-bg {
-    position: absolute; inset: 0; z-index: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(28,50,96,0.8) 0%, transparent 70%),
-      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(201,168,76,0.08) 0%, transparent 60%),
-      linear-gradient(180deg, #0a1628 0%, #122040 50%, #0a1628 100%);
-  }
-  .hero-grid {
-    position: absolute; inset: 0; z-index: 0;
-    background-image:
-      linear-gradient(rgba(201,168,76,0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(201,168,76,0.05) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 70%);
-  }
-  .hero-circle {
-    position: absolute; border-radius: 50%; border: 1px solid rgba(201,168,76,0.12);
-    animation: pulseRing 8s ease-in-out infinite;
-  }
-  .hero-circle:nth-child(1) { width: 400px; height: 400px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 0s; }
-  .hero-circle:nth-child(2) { width: 600px; height: 600px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 1.5s; }
-  .hero-circle:nth-child(3) { width: 800px; height: 800px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 3s; }
-  @keyframes pulseRing { 0%,100% { opacity: 0.15; } 50% { opacity: 0.5; } }
-
-  .hero-content { position: relative; z-index: 1; max-width: 800px; }
-  .hero-tag {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 0.65rem; letter-spacing: 0.28em; color: var(--gold);
-    text-transform: uppercase; margin-bottom: 2rem; font-weight: 400;
-  }
-  .hero-tag::before, .hero-tag::after {
-    content: ''; display: block; width: 30px; height: 1px; background: var(--gold);
-  }
-  .hero-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3.5rem, 8vw, 7rem);
-    font-weight: 300; line-height: 0.95; letter-spacing: -0.01em;
-    margin-bottom: 1.2rem;
-  }
-  .hero-title span { color: var(--gold); font-style: italic; }
-  .hero-subtitle {
-    font-size: 0.75rem; letter-spacing: 0.22em; color: rgba(255,255,255,0.55);
-    text-transform: uppercase; margin-bottom: 3.5rem; font-weight: 300;
-    line-height: 2;
-  }
-  .hero-actions { display: flex; align-items: center; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
-  .btn-primary {
-    background: var(--gold); color: var(--navy);
-    padding: 0.9rem 2.5rem; font-family: 'Josefin Sans', sans-serif;
-    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
-    cursor: pointer; border: none; font-weight: 700; transition: all 0.25s;
-    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-  }
-  .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
-  .btn-secondary {
-    background: transparent; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.8);
-    padding: 0.9rem 2.5rem; font-family: 'Josefin Sans', sans-serif;
-    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
-    cursor: pointer; font-weight: 400; transition: all 0.25s;
-  }
-  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
-  .hero-scroll {
-    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
-    z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;
-    font-size: 0.6rem; letter-spacing: 0.2em; color: rgba(255,255,255,0.4);
-  }
-  .scroll-line {
-    width: 1px; height: 40px; background: linear-gradient(180deg, rgba(201,168,76,0.6), transparent);
-    animation: scrollDown 2s ease-in-out infinite;
-  }
-  @keyframes scrollDown { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
-
-  /* ── SECTION BASE ── */
-  section { padding: 7rem 4rem; }
-  .section-label {
-    font-size: 0.62rem; letter-spacing: 0.3em; color: var(--gold);
-    text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;
-  }
-  .section-label::before { content: ''; display: block; width: 24px; height: 1px; background: var(--gold); }
-  .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 300; line-height: 1.15;
-    margin-bottom: 1.5rem;
-  }
-  .section-title em { color: var(--gold); font-style: italic; }
-
-  /* ── ABOUT ── */
-  #about { background: var(--navy-mid); }
-  .about-grid {
-    max-width: 1100px; margin: 0 auto;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
-  }
-  .about-text p {
-    font-size: 0.92rem; line-height: 1.9; color: rgba(255,255,255,0.65);
-    margin-bottom: 1.2rem; font-weight: 300;
-  }
-  .about-stats {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
-  }
-  .stat-card {
-    border: 1px solid var(--border); padding: 1.8rem 1.5rem;
-    position: relative; overflow: hidden;
-  }
-  .stat-card::before {
-    content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%;
-    background: var(--gold);
-  }
-  .stat-num {
-    font-family: 'Cormorant Garamond', serif; font-size: 2.8rem;
-    font-weight: 300; color: var(--gold); line-height: 1;
-  }
-  .stat-desc { font-size: 0.65rem; letter-spacing: 0.15em; color: rgba(255,255,255,0.5); margin-top: 0.5rem; text-transform: uppercase; }
-
-  /* ── NEXT EVENT ── */
-  #event { background: var(--navy); position: relative; overflow: hidden; }
-  #event::before {
-    content: 'EVENT'; position: absolute; right: -2rem; top: 50%; transform: translateY(-50%);
-    font-family: 'Cormorant Garamond', serif; font-size: 18rem; font-weight: 600;
-    color: rgba(201,168,76,0.03); line-height: 1; pointer-events: none; z-index: 0;
-    letter-spacing: -0.05em;
-  }
-  .event-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
-  .event-card {
-    border: 1px solid var(--border); padding: 3.5rem;
-    display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: start;
-    background: rgba(28,50,96,0.2); position: relative;
-  }
-  .event-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: linear-gradient(90deg, var(--gold), transparent);
-  }
-  .event-badge {
-    display: inline-block; background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.3);
-    color: var(--gold); font-size: 0.6rem; letter-spacing: 0.2em;
-    padding: 0.4rem 1rem; text-transform: uppercase; margin-bottom: 1.5rem;
-  }
-  .event-title {
-    font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300;
-    line-height: 1.2; margin-bottom: 1rem;
-  }
-  .event-meta { display: flex; flex-direction: column; gap: 0.7rem; margin-top: 1.5rem; }
-  .event-meta-item { display: flex; align-items: center; gap: 10px; font-size: 0.75rem; color: rgba(255,255,255,0.6); letter-spacing: 0.05em; }
-  .meta-icon { width: 18px; height: 18px; border: 1px solid rgba(201,168,76,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.55rem; color: var(--gold); flex-shrink: 0; }
-  .event-desc { font-size: 0.88rem; line-height: 1.85; color: rgba(255,255,255,0.6); font-weight: 300; }
-  .committees-list { margin-top: 2rem; }
-  .committees-label { font-size: 0.62rem; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; margin-bottom: 1rem; }
-  .committee-tag {
-    display: inline-block; border: 1px solid rgba(201,168,76,0.25);
-    font-size: 0.62rem; letter-spacing: 0.12em; padding: 0.35rem 0.85rem;
-    color: rgba(255,255,255,0.7); margin: 0.25rem 0.25rem 0 0; text-transform: uppercase;
-  }
-  .event-cta { margin-top: 2.5rem; }
-
-  /* ── REGISTER CTA ── */
-  #register-cta {
-    text-align: center; background: var(--navy-mid);
-    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-    padding: 5rem 2rem;
-  }
-  .cta-inner { max-width: 600px; margin: 0 auto; }
-  .cta-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; margin-bottom: 1rem; }
-  .cta-sub { font-size: 0.75rem; letter-spacing: 0.12em; color: rgba(255,255,255,0.5); margin-bottom: 2.5rem; line-height: 1.8; }
-
-  /* ── FOOTER ── */
-  footer {
-    background: rgba(6,13,25,0.98); padding: 3rem 4rem;
-    display: flex; align-items: center; justify-content: space-between;
-    border-top: 1px solid var(--border); flex-wrap: wrap; gap: 1rem;
-  }
-  .footer-copy { font-size: 0.65rem; letter-spacing: 0.12em; color: rgba(255,255,255,0.3); }
-  .footer-gold { color: var(--gold); }
-
-  /* ── MODAL OVERLAY ── */
-  .modal-overlay {
-    position: fixed; inset: 0; z-index: 999;
-    background: rgba(6,13,25,0.92);
-    backdrop-filter: blur(6px);
-    display: none; align-items: center; justify-content: center; padding: 2rem;
-    overflow-y: auto;
-  }
-  .modal-overlay.active { display: flex; }
-
-  /* ── AUTH MODAL ── */
-  .auth-modal {
-    background: var(--navy-mid); border: 1px solid var(--border);
-    width: 100%; max-width: 460px; position: relative;
-    padding: 3rem;
-  }
-  .auth-modal::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: linear-gradient(90deg, var(--gold), transparent);
-  }
-  .modal-close {
-    position: absolute; top: 1.2rem; right: 1.2rem;
-    background: none; border: none; color: rgba(255,255,255,0.4); font-size: 1.3rem;
-    cursor: pointer; transition: color 0.2s; line-height: 1;
-  }
-  .modal-close:hover { color: var(--gold); }
-  .modal-emblem {
-    width: 50px; height: 50px; border: 2px solid var(--gold); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600;
-    color: var(--gold); margin-bottom: 1.8rem;
-  }
-  .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; margin-bottom: 0.4rem; }
-  .modal-sub { font-size: 0.7rem; letter-spacing: 0.12em; color: rgba(255,255,255,0.4); margin-bottom: 2rem; }
-  .tab-row { display: flex; gap: 0; margin-bottom: 2rem; border-bottom: 1px solid var(--border); }
-  .tab-btn {
-    flex: 1; background: none; border: none; color: rgba(255,255,255,0.4);
-    font-family: 'Josefin Sans', sans-serif; font-size: 0.68rem; letter-spacing: 0.18em;
-    text-transform: uppercase; padding: 0.8rem 0; cursor: pointer; transition: all 0.2s;
-    border-bottom: 2px solid transparent; margin-bottom: -1px; font-weight: 400;
-  }
-  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
-
-  /* ── FORM STYLES ── */
-  .form-group { margin-bottom: 1.3rem; }
-  .form-label { display: block; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 0.5rem; }
-  .form-input, .form-select, .form-textarea {
-    width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(201,168,76,0.2);
-    color: var(--white); font-family: 'Josefin Sans', sans-serif; font-size: 0.85rem;
-    padding: 0.75rem 1rem; outline: none; transition: border-color 0.2s; letter-spacing: 0.05em;
-    appearance: none;
-  }
-  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold); background: rgba(201,168,76,0.05); }
-  .form-input::placeholder { color: rgba(255,255,255,0.25); font-size: 0.8rem; }
-  .form-select option { background: var(--navy-mid); color: var(--white); }
-  .form-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .form-submit {
-    width: 100%; background: var(--gold); color: var(--navy);
-    padding: 0.85rem; font-family: 'Josefin Sans', sans-serif;
-    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
-    cursor: pointer; border: none; font-weight: 700; transition: all 0.25s; margin-top: 0.5rem;
-  }
-  .form-submit:hover { background: var(--gold-light); }
-  .form-error { font-size: 0.68rem; color: #e07070; margin-top: 0.4rem; display: none; }
-  .form-error.show { display: block; }
-  .form-switch { font-size: 0.68rem; color: rgba(255,255,255,0.4); text-align: center; margin-top: 1.2rem; }
-  .form-switch a { color: var(--gold); text-decoration: none; cursor: pointer; }
-
-  /* ── EVENT REGISTRATION MODAL ── */
-  .event-reg-modal {
-    background: var(--navy-mid); border: 1px solid var(--border);
-    width: 100%; max-width: 600px; position: relative; padding: 3rem;
-  }
-  .event-reg-modal::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: linear-gradient(90deg, var(--gold), transparent);
-  }
-  .reg-header { margin-bottom: 2rem; }
-  .reg-event-name {
-    font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; margin-bottom: 0.4rem;
-  }
-  .reg-event-date { font-size: 0.65rem; letter-spacing: 0.18em; color: var(--gold); text-transform: uppercase; }
-  .section-divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
-  .reg-section-title { font-size: 0.65rem; letter-spacing: 0.2em; color: rgba(255,255,255,0.5); text-transform: uppercase; margin-bottom: 1.2rem; }
-
-  /* ── DASHBOARD ── */
-  #dashboard { display: none; }
-  .dash-hero {
-    min-height: 35vh; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end;
-    padding: 8rem 4rem 3rem;
-    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-mid) 100%);
-    border-bottom: 1px solid var(--border); position: relative; overflow: hidden;
-  }
-  .dash-hero::after {
-    content: ''; position: absolute; inset: 0;
-    background-image: linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
-    background-size: 50px 50px;
-  }
-  .dash-greeting { font-size: 0.65rem; letter-spacing: 0.22em; color: var(--gold); text-transform: uppercase; margin-bottom: 0.7rem; position: relative; z-index: 1; }
-  .dash-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; position: relative; z-index: 1; }
-  .dash-sub { font-size: 0.72rem; color: rgba(255,255,255,0.45); margin-top: 0.5rem; letter-spacing: 0.08em; position: relative; z-index: 1; }
-  .dash-content { max-width: 1100px; margin: 0 auto; padding: 3rem 4rem; }
-  .dash-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
-  .dash-card {
-    border: 1px solid var(--border); padding: 2rem; position: relative; overflow: hidden;
-  }
-  .dash-card::before {
-    content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%;
-    background: var(--gold);
-  }
-  .dash-card-title { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
-  .next-event-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; margin-bottom: 0.8rem; }
-  .event-info-row { display: flex; align-items: center; gap: 8px; font-size: 0.72rem; color: rgba(255,255,255,0.55); margin-bottom: 0.5rem; }
-  .reg-status {
-    display: inline-flex; align-items: center; gap: 6px; margin-top: 1.2rem;
-    font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
-    padding: 0.4rem 0.9rem; border: 1px solid;
-  }
-  .reg-status.registered { border-color: rgba(26,122,74,0.5); color: #4cd994; background: rgba(26,122,74,0.1); }
-  .reg-status.not-registered { border-color: rgba(201,168,76,0.3); color: var(--gold); background: rgba(201,168,76,0.05); }
-  .dot { width: 7px; height: 7px; border-radius: 50%; }
-  .dot.green { background: #4cd994; }
-  .dot.gold { background: var(--gold); }
-  .profile-info { display: flex; flex-direction: column; gap: 1rem; }
-  .profile-row { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0; border-bottom: 1px solid rgba(201,168,76,0.1); }
-  .profile-row:last-child { border-bottom: none; }
-  .profile-key { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
-  .profile-val { font-size: 0.8rem; color: rgba(255,255,255,0.85); }
-  .logout-btn {
-    background: none; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.4);
-    font-family: 'Josefin Sans', sans-serif; font-size: 0.65rem; letter-spacing: 0.15em;
-    text-transform: uppercase; padding: 0.5rem 1.2rem; cursor: pointer; transition: all 0.2s; margin-top: 1.5rem;
-  }
-  .logout-btn:hover { border-color: var(--danger); color: #e07070; }
-
-  /* ── SUCCESS / TOAST ── */
-  .toast {
-    position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
-    background: var(--navy-mid); border: 1px solid rgba(76,217,148,0.4);
-    padding: 1rem 1.5rem; max-width: 340px; transform: translateY(100px);
-    opacity: 0; transition: all 0.4s; border-left: 3px solid #4cd994;
-  }
-  .toast.show { transform: translateY(0); opacity: 1; }
-  .toast-title { font-size: 0.72rem; font-weight: 600; color: #4cd994; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.25rem; }
-  .toast-msg { font-size: 0.72rem; color: rgba(255,255,255,0.6); }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 900px) {
-    nav { padding: 1rem 1.5rem; }
-    .nav-links { display: none; }
-    section { padding: 5rem 1.5rem; }
-    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
-    .event-card { grid-template-columns: 1fr; gap: 2rem; }
-    .dash-grid { grid-template-columns: 1fr; }
-    .dash-content { padding: 2rem 1.5rem; }
-    .dash-hero { padding: 7rem 1.5rem 2.5rem; }
-    footer { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
-    .form-row { grid-template-columns: 1fr; }
-    .auth-modal, .event-reg-modal { padding: 2rem 1.5rem; }
-  }
+:root{--navy:#0a1628;--navy-mid:#122040;--navy-light:#1c3260;--gold:#c9a84c;--gold-light:#e8c97a;--white:#ffffff;--border:rgba(201,168,76,0.25);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Josefin Sans',sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--navy);}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:10px;}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 4rem;background:rgba(10,22,40,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+.nav-logo{display:flex;align-items:center;gap:14px;text-decoration:none;}
+.nav-emblem{width:42px;height:42px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600;color:var(--gold);position:relative;}
+.nav-emblem::before{content:'';position:absolute;inset:3px;border:1px solid rgba(201,168,76,0.35);border-radius:50%;}
+.nav-brand{display:flex;flex-direction:column;line-height:1;}
+.nav-brand-main{font-size:1.05rem;font-weight:700;letter-spacing:0.22em;}
+.nav-brand-sub{font-size:0.6rem;letter-spacing:0.18em;color:var(--gold);font-weight:300;margin-top:2px;}
+.nav-links{display:flex;align-items:center;gap:2.2rem;}
+.nav-links a{text-decoration:none;font-size:0.7rem;letter-spacing:0.16em;color:rgba(255,255,255,0.7);text-transform:uppercase;font-weight:400;transition:color 0.2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transition:transform 0.25s;}
+.nav-links a:hover{color:var(--gold);}
+.nav-links a:hover::after{transform:scaleX(1);}
+.nav-btn{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:0.55rem 1.4rem;font-family:'Josefin Sans',sans-serif;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;transition:all 0.25s;font-weight:600;}
+.nav-btn:hover{background:var(--gold);color:var(--navy);}
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;text-align:center;padding:8rem 2rem 4rem;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(28,50,96,0.8) 0%,transparent 70%),linear-gradient(180deg,#0a1628 0%,#122040 50%,#0a1628 100%);}
+.hero-grid{position:absolute;inset:0;z-index:0;background-image:linear-gradient(rgba(201,168,76,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.05) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 0%,transparent 70%);}
+.hero-circle{position:absolute;border-radius:50%;border:1px solid rgba(201,168,76,0.12);animation:pulseRing 8s ease-in-out infinite;}
+.hero-circle:nth-child(1){width:400px;height:400px;top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:0s;}
+.hero-circle:nth-child(2){width:650px;height:650px;top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:1.5s;}
+.hero-circle:nth-child(3){width:900px;height:900px;top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:3s;}
+@keyframes pulseRing{0%,100%{opacity:0.15;}50%{opacity:0.45;}}
+.hero-content{position:relative;z-index:1;max-width:820px;}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:0.65rem;letter-spacing:0.28em;color:var(--gold);text-transform:uppercase;margin-bottom:2rem;}
+.hero-tag::before,.hero-tag::after{content:'';display:block;width:30px;height:1px;background:var(--gold);}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,8vw,7rem);font-weight:300;line-height:0.95;margin-bottom:1.2rem;}
+.hero-title span{color:var(--gold);font-style:italic;}
+.hero-subtitle{font-size:0.75rem;letter-spacing:0.22em;color:rgba(255,255,255,0.55);text-transform:uppercase;margin-bottom:3.5rem;font-weight:300;line-height:2;}
+.hero-actions{display:flex;align-items:center;gap:1.5rem;justify-content:center;flex-wrap:wrap;}
+.btn-primary{background:var(--gold);color:var(--navy);padding:0.9rem 2.5rem;font-family:'Josefin Sans',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;border:none;font-weight:700;transition:all 0.25s;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-1px);}
+.btn-secondary{background:transparent;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.8);padding:0.9rem 2.5rem;font-family:'Josefin Sans',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;font-weight:400;transition:all 0.25s;}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold);}
+.hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:0.6rem;letter-spacing:0.2em;color:rgba(255,255,255,0.4);}
+.scroll-line{width:1px;height:40px;background:linear-gradient(180deg,rgba(201,168,76,0.6),transparent);animation:scrollDown 2s ease-in-out infinite;}
+@keyframes scrollDown{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}51%{transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
+/* SECTIONS */
+section{padding:7rem 4rem;}
+.section-label{font-size:0.62rem;letter-spacing:0.3em;color:var(--gold);text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:10px;}
+.section-label::before{content:'';display:block;width:24px;height:1px;background:var(--gold);}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4vw,3.2rem);font-weight:300;line-height:1.15;margin-bottom:1.5rem;}
+.section-title em{color:var(--gold);font-style:italic;}
+/* ABOUT */
+#about{background:var(--navy-mid);}
+.about-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;}
+.about-text p{font-size:0.92rem;line-height:1.9;color:rgba(255,255,255,0.65);margin-bottom:1.2rem;font-weight:300;}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.stat-card{border:1px solid var(--border);padding:1.8rem 1.5rem;position:relative;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--gold);}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:var(--gold);line-height:1;}
+.stat-desc{font-size:0.65rem;letter-spacing:0.15em;color:rgba(255,255,255,0.5);margin-top:0.5rem;text-transform:uppercase;}
+/* CONCEPT */
+#concept{background:var(--navy);position:relative;overflow:hidden;}
+#concept::after{content:'NATION';position:absolute;right:-3rem;top:50%;transform:translateY(-50%);font-family:'Cormorant Garamond',serif;font-size:15rem;font-weight:600;color:rgba(201,168,76,0.03);line-height:1;pointer-events:none;}
+.concept-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1;}
+.concept-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:5rem;align-items:start;margin-bottom:4rem;}
+.concept-text p{font-size:0.9rem;line-height:1.9;color:rgba(255,255,255,0.6);margin-bottom:1rem;font-weight:300;}
+.concept-box{border:1px solid var(--border);padding:2rem;background:rgba(201,168,76,0.03);position:relative;}
+.concept-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);}
+.concept-box-title{font-size:0.62rem;letter-spacing:0.22em;color:var(--gold);text-transform:uppercase;margin-bottom:1.3rem;}
+.step-row{display:flex;gap:1rem;margin-bottom:1rem;align-items:flex-start;}
+.step-num{width:24px;height:24px;border:1px solid rgba(201,168,76,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:var(--gold);flex-shrink:0;margin-top:1px;}
+.step-text{font-size:0.78rem;color:rgba(255,255,255,0.62);line-height:1.65;}
+.identity-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
+.id-card{border:1px solid var(--border);padding:1.5rem;transition:border-color 0.2s,background 0.2s;}
+.id-card:hover{border-color:rgba(201,168,76,0.5);background:rgba(201,168,76,0.04);}
+.id-icon{font-size:1.3rem;margin-bottom:0.7rem;}
+.id-label{font-size:0.6rem;letter-spacing:0.18em;color:var(--gold);text-transform:uppercase;margin-bottom:0.4rem;}
+.id-desc{font-size:0.73rem;color:rgba(255,255,255,0.5);line-height:1.6;}
+/* TOPICS */
+#topics{background:var(--navy-mid);}
+.topics-inner{max-width:1100px;margin:0 auto;}
+.topics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.1rem;margin-top:3rem;}
+.topic-card{border:1px solid var(--border);padding:1.4rem;display:flex;align-items:flex-start;gap:1rem;transition:border-color 0.2s,background 0.2s;}
+.topic-card:hover{border-color:rgba(201,168,76,0.55);background:rgba(201,168,76,0.04);}
+.topic-num{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:rgba(201,168,76,0.2);line-height:1;flex-shrink:0;width:2rem;text-align:right;}
+.topic-name{font-size:0.78rem;letter-spacing:0.06em;font-weight:600;text-transform:uppercase;color:rgba(255,255,255,0.85);line-height:1.4;}
+.topic-tag{display:inline-block;margin-top:0.5rem;font-size:0.57rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,0.2);padding:0.18rem 0.55rem;}
+/* EVENT */
+#event{background:var(--navy);position:relative;overflow:hidden;}
+#event::after{content:'EVENT';position:absolute;right:-2rem;top:50%;transform:translateY(-50%);font-family:'Cormorant Garamond',serif;font-size:15rem;font-weight:600;color:rgba(201,168,76,0.03);line-height:1;pointer-events:none;}
+.event-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1;}
+.event-card{border:1px solid var(--border);padding:3.5rem;display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start;background:rgba(28,50,96,0.2);position:relative;}
+.event-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),transparent);}
+.event-badge{display:inline-block;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);color:var(--gold);font-size:0.6rem;letter-spacing:0.2em;padding:0.4rem 1rem;text-transform:uppercase;margin-bottom:1.5rem;}
+.event-title-h{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;line-height:1.2;margin-bottom:1rem;}
+.event-meta{display:flex;flex-direction:column;gap:0.7rem;margin-top:1.5rem;}
+.event-meta-item{display:flex;align-items:center;gap:10px;font-size:0.75rem;color:rgba(255,255,255,0.6);}
+.meta-icon{width:18px;height:18px;border:1px solid rgba(201,168,76,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.55rem;color:var(--gold);flex-shrink:0;}
+.committee-tag{display:inline-block;border:1px solid rgba(201,168,76,0.25);font-size:0.62rem;letter-spacing:0.1em;padding:0.32rem 0.8rem;color:rgba(255,255,255,0.7);margin:0.25rem 0.25rem 0 0;text-transform:uppercase;}
+/* CTA */
+#register-cta{text-align:center;background:var(--navy-mid);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:5rem 2rem;}
+.cta-inner{max-width:600px;margin:0 auto;}
+.cta-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3rem);font-weight:300;margin-bottom:1rem;}
+.cta-sub{font-size:0.75rem;letter-spacing:0.12em;color:rgba(255,255,255,0.5);margin-bottom:2.5rem;line-height:1.8;}
+/* FOOTER */
+footer{background:rgba(6,13,25,0.98);padding:3rem 4rem;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);flex-wrap:wrap;gap:1rem;}
+.footer-copy{font-size:0.65rem;letter-spacing:0.12em;color:rgba(255,255,255,0.3);}
+.footer-gold{color:var(--gold);}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:999;background:rgba(6,13,25,0.93);backdrop-filter:blur(6px);display:none;align-items:flex-start;justify-content:center;padding:2rem;overflow-y:auto;}
+.modal-overlay.active{display:flex;}
+.auth-modal{background:var(--navy-mid);border:1px solid var(--border);width:100%;max-width:460px;position:relative;padding:3rem;margin:auto;}
+.auth-modal::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),transparent);}
+.modal-close{position:absolute;top:1.2rem;right:1.2rem;background:none;border:none;color:rgba(255,255,255,0.4);font-size:1.3rem;cursor:pointer;transition:color 0.2s;line-height:1;}
+.modal-close:hover{color:var(--gold);}
+.modal-emblem{width:50px;height:50px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--gold);margin-bottom:1.8rem;}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;margin-bottom:0.4rem;}
+.modal-sub{font-size:0.7rem;letter-spacing:0.12em;color:rgba(255,255,255,0.4);margin-bottom:2rem;}
+.tab-row{display:flex;margin-bottom:2rem;border-bottom:1px solid var(--border);}
+.tab-btn{flex:1;background:none;border:none;color:rgba(255,255,255,0.4);font-family:'Josefin Sans',sans-serif;font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;padding:0.8rem 0;cursor:pointer;transition:all 0.2s;border-bottom:2px solid transparent;margin-bottom:-1px;font-weight:400;}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+/* FORMS */
+.form-group{margin-bottom:1.2rem;}
+.form-label{display:block;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:0.5rem;}
+.req{color:var(--gold);}
+.form-input,.form-select,.form-textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);color:var(--white);font-family:'Josefin Sans',sans-serif;font-size:0.85rem;padding:0.75rem 1rem;outline:none;transition:border-color 0.2s;letter-spacing:0.05em;appearance:none;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold);background:rgba(201,168,76,0.05);}
+.form-input::placeholder{color:rgba(255,255,255,0.25);font-size:0.8rem;}
+.form-select option{background:var(--navy-mid);color:var(--white);}
+.form-textarea{resize:vertical;min-height:90px;line-height:1.6;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.form-submit{width:100%;background:var(--gold);color:var(--navy);padding:0.85rem;font-family:'Josefin Sans',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;border:none;font-weight:700;transition:all 0.25s;margin-top:0.5rem;}
+.form-submit:hover{background:var(--gold-light);}
+.form-error{font-size:0.68rem;color:#e07070;margin-top:0.5rem;display:none;padding:0.5rem 0.8rem;border:1px solid rgba(224,112,112,0.3);background:rgba(224,112,112,0.06);}
+.form-error.show{display:block;}
+.form-switch{font-size:0.68rem;color:rgba(255,255,255,0.4);text-align:center;margin-top:1.2rem;}
+.form-switch a{color:var(--gold);text-decoration:none;cursor:pointer;}
+.input-hint{font-size:0.6rem;letter-spacing:0.08em;color:rgba(255,255,255,0.3);margin-top:0.35rem;}
+.input-ok{border-color:rgba(76,217,148,0.5)!important;}
+.input-bad{border-color:rgba(224,112,112,0.5)!important;}
+/* CHECKBOXES */
+.check-group{display:flex;flex-wrap:wrap;gap:0.45rem;margin-top:0.3rem;}
+.check-item{position:relative;}
+.check-item input[type=checkbox]{position:absolute;opacity:0;width:0;height:0;}
+.check-item label{display:inline-block;border:1px solid rgba(201,168,76,0.2);font-size:0.6rem;letter-spacing:0.1em;padding:0.32rem 0.8rem;color:rgba(255,255,255,0.52);cursor:pointer;transition:all 0.18s;text-transform:uppercase;user-select:none;}
+.check-item input:checked+label{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.08);}
+.check-item label:hover{border-color:rgba(201,168,76,0.4);color:rgba(255,255,255,0.8);}
+/* RADIO */
+.radio-group{display:flex;gap:1rem;margin-top:0.4rem;}
+.radio-item{flex:1;position:relative;}
+.radio-item input[type=radio]{position:absolute;opacity:0;width:0;height:0;}
+.radio-item label{display:flex;align-items:center;justify-content:center;border:1px solid rgba(201,168,76,0.2);padding:0.65rem;cursor:pointer;transition:all 0.18s;font-size:0.68rem;letter-spacing:0.1em;color:rgba(255,255,255,0.52);text-transform:uppercase;}
+.radio-item input:checked+label{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.08);}
+/* MULTISTEP MODAL */
+.reg-modal{background:var(--navy-mid);border:1px solid var(--border);width:100%;max-width:650px;position:relative;margin:auto;}
+.reg-modal::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),transparent);z-index:1;}
+.reg-header{padding:2rem 2.5rem 1.5rem;border-bottom:1px solid var(--border);}
+.steps-bar{display:flex;gap:4px;margin-bottom:1rem;}
+.s-dot{flex:1;height:3px;background:rgba(201,168,76,0.12);transition:background 0.3s;}
+.s-dot.active{background:var(--gold);}
+.s-dot.done{background:rgba(201,168,76,0.45);}
+.step-meta{font-size:0.6rem;letter-spacing:0.18em;color:rgba(255,255,255,0.35);text-transform:uppercase;}
+.step-heading{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;margin-top:0.3rem;}
+.reg-body{padding:2rem 2.5rem;}
+.reg-foot{padding:0 2.5rem 2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;}
+.btn-back{background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.45);font-family:'Josefin Sans',sans-serif;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.65rem 1.4rem;cursor:pointer;transition:all 0.2s;}
+.btn-back:hover{border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.8);}
+.btn-next{flex:1;background:var(--gold);color:var(--navy);padding:0.72rem 1.5rem;font-family:'Josefin Sans',sans-serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;border:none;font-weight:700;transition:all 0.25s;}
+.btn-next:hover{background:var(--gold-light);}
+.btn-next:disabled{opacity:0.5;cursor:not-allowed;}
+/* NAME CHECK */
+.name-status{display:flex;align-items:center;gap:6px;margin-top:0.45rem;font-size:0.65rem;min-height:1rem;}
+.name-status.checking{color:rgba(255,255,255,0.4);}
+.name-status.ok{color:#4cd994;}
+.name-status.fail{color:#e07070;}
+.ndot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.ndot.checking{background:rgba(255,255,255,0.3);animation:blink 1s infinite;}
+.ndot.ok{background:#4cd994;}
+.ndot.fail{background:#e07070;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+/* AI */
+.ai-loading{display:flex;align-items:center;gap:10px;padding:2.5rem 0;color:rgba(255,255,255,0.5);font-size:0.75rem;letter-spacing:0.1em;}
+.ai-dots span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin:0 2px;animation:bounce 1.2s infinite;}
+.ai-dots span:nth-child(2){animation-delay:0.2s;}
+.ai-dots span:nth-child(3){animation-delay:0.4s;}
+@keyframes bounce{0%,80%,100%{transform:translateY(0);opacity:0.5;}40%{transform:translateY(-6px);opacity:1;}}
+.q-card{border:1px solid var(--border);padding:1.4rem;margin-bottom:1.2rem;position:relative;}
+.q-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--gold);}
+.q-label{font-size:0.58rem;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:0.45rem;}
+.q-text{font-size:0.82rem;color:rgba(255,255,255,0.85);line-height:1.65;margin-bottom:0.8rem;font-style:italic;}
+.verdict-box{border:1px solid;padding:1.2rem 1.5rem;margin-top:1rem;display:flex;gap:1rem;align-items:flex-start;}
+.verdict-box.accepted{border-color:rgba(76,217,148,0.4);background:rgba(76,217,148,0.05);}
+.verdict-box.review{border-color:rgba(201,168,76,0.4);background:rgba(201,168,76,0.05);}
+.verdict-box.rejected{border-color:rgba(224,112,112,0.4);background:rgba(224,112,112,0.05);}
+.v-icon{font-size:1.3rem;flex-shrink:0;}
+.v-label{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;margin-bottom:0.3rem;}
+.v-label.accepted{color:#4cd994;}.v-label.review{color:var(--gold);}.v-label.rejected{color:#e07070;}
+.v-text{font-size:0.75rem;color:rgba(255,255,255,0.6);line-height:1.65;}
+/* DASHBOARD */
+#dashboard{display:none;}
+.dash-hero{min-height:32vh;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:8rem 4rem 3rem;background:linear-gradient(180deg,var(--navy) 0%,var(--navy-mid) 100%);border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.dash-hero::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.04) 1px,transparent 1px);background-size:50px 50px;}
+.dash-greeting{font-size:0.65rem;letter-spacing:0.22em;color:var(--gold);text-transform:uppercase;margin-bottom:0.7rem;position:relative;z-index:1;}
+.dash-name{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3rem);font-weight:300;position:relative;z-index:1;}
+.dash-sub{font-size:0.72rem;color:rgba(255,255,255,0.45);margin-top:0.5rem;letter-spacing:0.08em;position:relative;z-index:1;}
+.dash-content{max-width:1100px;margin:0 auto;padding:3rem 4rem;}
+.dash-grid{display:grid;grid-template-columns:2fr 1fr;gap:2rem;}
+.dash-card{border:1px solid var(--border);padding:2rem;position:relative;}
+.dash-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--gold);}
+.dash-card-title{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;}
+.next-event-name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;margin-bottom:0.8rem;}
+.event-info-row{display:flex;align-items:center;gap:8px;font-size:0.72rem;color:rgba(255,255,255,0.55);margin-bottom:0.5rem;}
+.reg-status{display:inline-flex;align-items:center;gap:6px;margin-top:1.2rem;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.4rem 0.9rem;border:1px solid;}
+.reg-status.registered{border-color:rgba(76,217,148,0.5);color:#4cd994;background:rgba(76,217,148,0.08);}
+.reg-status.not-registered{border-color:rgba(201,168,76,0.3);color:var(--gold);background:rgba(201,168,76,0.05);}
+.reg-status.pending{border-color:rgba(232,201,122,0.4);color:var(--gold-light);background:rgba(201,168,76,0.06);}
+.dot{width:7px;height:7px;border-radius:50%;}
+.dot.green{background:#4cd994;}.dot.gold{background:var(--gold);}.dot.amber{background:#e8c97a;}
+.profile-row{display:flex;justify-content:space-between;align-items:center;padding:0.65rem 0;border-bottom:1px solid rgba(201,168,76,0.1);}
+.profile-row:last-child{border-bottom:none;}
+.profile-key{font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);}
+.profile-val{font-size:0.78rem;color:rgba(255,255,255,0.85);}
+.logout-btn{background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.4);font-family:'Josefin Sans',sans-serif;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.5rem 1.2rem;cursor:pointer;transition:all 0.2s;margin-top:1.5rem;}
+.logout-btn:hover{border-color:#e07070;color:#e07070;}
+.country-banner{border:1px solid var(--border);padding:1.5rem;margin-top:1.5rem;background:rgba(28,50,96,0.2);position:relative;}
+.country-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);}
+.country-name-display{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;color:var(--gold);margin-bottom:0.3rem;}
+.country-meta-small{font-size:0.65rem;letter-spacing:0.1em;color:rgba(255,255,255,0.4);}
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;background:var(--navy-mid);border:1px solid rgba(76,217,148,0.4);padding:1rem 1.5rem;max-width:340px;transform:translateY(100px);opacity:0;transition:all 0.4s;border-left:3px solid #4cd994;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast-title{font-size:0.72rem;font-weight:600;color:#4cd994;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.25rem;}
+.toast-msg{font-size:0.72rem;color:rgba(255,255,255,0.6);}
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem;}.nav-links{display:none;}
+  section{padding:5rem 1.5rem;}
+  .about-grid,.event-card,.concept-grid,.dash-grid{grid-template-columns:1fr;gap:2.5rem;}
+  .identity-grid{grid-template-columns:1fr 1fr;}
+  .dash-content{padding:2rem 1.5rem;}.dash-hero{padding:7rem 1.5rem 2.5rem;}
+  footer{flex-direction:column;text-align:center;padding:2rem 1.5rem;}
+  .form-row{grid-template-columns:1fr;}
+  .reg-modal{max-width:100%;}
+  .reg-body,.reg-foot,.reg-header{padding-left:1.5rem;padding-right:1.5rem;}
+}
 </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
 <nav>
   <a class="nav-logo" href="#hero">
     <div class="nav-emblem">YDL</div>
-    <div class="nav-brand">
-      <span class="nav-brand-main">YDL</span>
-      <span class="nav-brand-sub">Young Debaters & Leaders</span>
-    </div>
+    <div class="nav-brand"><span class="nav-brand-main">YDL</span><span class="nav-brand-sub">Young Debaters & Leaders</span></div>
   </a>
   <div class="nav-links">
     <a href="#about">About</a>
-    <a href="#event">Next Event</a>
-    <a href="#" onclick="openModal('auth'); return false;">Delegates</a>
+    <a href="#concept">Concept</a>
+    <a href="#topics">Topics</a>
+    <a href="#event">Event</a>
+    <a href="#" onclick="openAuthModal();return false;">Delegates</a>
   </div>
-  <button class="nav-btn" id="nav-login-btn" onclick="openModal('auth')">Delegate Portal</button>
-  <button class="nav-btn" id="nav-delegate-btn" onclick="showDashboard()">My Dashboard</button>
+  <button class="nav-btn" id="nav-login-btn" onclick="openAuthModal()">Delegate Portal</button>
+  <button class="nav-btn" id="nav-delegate-btn" onclick="showDashboard()" style="display:none;">My Dashboard</button>
 </nav>
 
-<!-- HERO -->
 <div id="main-site">
-  <section id="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-grid"></div>
-    <div class="hero-circle"></div>
-    <div class="hero-circle"></div>
-    <div class="hero-circle"></div>
-    <div class="hero-content">
-      <div class="hero-tag">Model United Nations</div>
-      <h1 class="hero-title">Young<br><span>Debaters</span><br>& Leaders</h1>
-      <p class="hero-subtitle">Shaping tomorrow's diplomats · Building bridges · Inspiring change</p>
-      <div class="hero-actions">
-        <button class="btn-primary" onclick="openModal('auth')">Join as Delegate</button>
-        <button class="btn-secondary" onclick="document.getElementById('event').scrollIntoView({behavior:'smooth'})">Next Conference</button>
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div><div class="hero-grid"></div>
+  <div class="hero-circle"></div><div class="hero-circle"></div><div class="hero-circle"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Model United Nations</div>
+    <h1 class="hero-title">Young<br><span>Debaters</span><br>&amp; Leaders</h1>
+    <p class="hero-subtitle">Build a nation · Defend your seat · Shape the world</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="openAuthModal()">Join as Delegate</button>
+      <button class="btn-secondary" onclick="document.getElementById('concept').scrollIntoView({behavior:'smooth'})">The Concept</button>
+    </div>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div>Scroll</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text">
+      <div class="section-label">Who We Are</div>
+      <h2 class="section-title">Forging the voices of <em>tomorrow</em></h2>
+      <p>YDL is a premier Model United Nations club dedicated to empowering young minds with the art of diplomacy, negotiation, and leadership. We believe every great leader starts by learning to listen.</p>
+      <p>Our conferences challenge delegates to build nations, defend policies, and navigate the complex web of global diplomacy — all within a structured, professional, and intellectually demanding environment.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-card"><div class="stat-num">6+</div><div class="stat-desc">Annual Conferences</div></div>
+      <div class="stat-card"><div class="stat-num">200+</div><div class="stat-desc">Active Delegates</div></div>
+      <div class="stat-card"><div class="stat-num">12</div><div class="stat-desc">Committees</div></div>
+      <div class="stat-card"><div class="stat-num">15+</div><div class="stat-desc">Partner Schools</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONCEPT -->
+<section id="concept">
+  <div class="concept-inner">
+    <div class="section-label">The Format</div>
+    <h2 class="section-title">Design a nation. <em>Claim your seat.</em></h2>
+    <div class="concept-grid">
+      <div class="concept-text">
+        <p>At YDL Spring Summit 2025, participants don't represent existing countries — they <strong style="color:rgba(255,255,255,0.9);font-weight:600;">invent one</strong>. Every delegate designs a fictional nation with its own policies, economy, political system, strengths, and challenges.</p>
+        <p>During the conference, countries will debate the world's most pressing topics, negotiate strategic alliances, and ultimately defend before the General Assembly why their nation deserves admission into the <strong style="color:rgba(255,255,255,0.85);font-weight:600;">United Nations</strong>.</p>
+        <p>Only the most compelling, well-argued, and diplomatically savvy nations will earn their seat at the table. This is not simulation — this is statesmanship.</p>
+      </div>
+      <div class="concept-box">
+        <div class="concept-box-title">How It Works</div>
+        <div class="step-row"><div class="step-num">1</div><div class="step-text">Design your fictional country — name it, choose its identity, economy, and political system.</div></div>
+        <div class="step-row"><div class="step-num">2</div><div class="step-text">Pass our AI-moderated selection interview to prove you're committed and prepared.</div></div>
+        <div class="step-row"><div class="step-num">3</div><div class="step-text">Represent your nation across committee sessions, debating 10 global agenda topics.</div></div>
+        <div class="step-row"><div class="step-num">4</div><div class="step-text">Form alliances, draft resolutions, and build international coalitions.</div></div>
+        <div class="step-row"><div class="step-num">5</div><div class="step-text">Present your case to the General Assembly — and fight for your UN seat.</div></div>
       </div>
     </div>
-    <div class="hero-scroll"><div class="scroll-line"></div>Scroll</div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="about-grid">
-      <div class="about-text">
-        <div class="section-label">Who We Are</div>
-        <h2 class="section-title">Forging the voices of <em>tomorrow</em></h2>
-        <p>YDL is a premier Model United Nations club dedicated to empowering young minds with the art of diplomacy, negotiation, and leadership. We believe every great leader starts by learning to listen.</p>
-        <p>Our conferences bring together passionate delegates to tackle the world's most pressing challenges — from climate policy to global security — in a structured, professional, and intellectually stimulating environment.</p>
-      </div>
-      <div class="about-stats">
-        <div class="stat-card"><div class="stat-num">6+</div><div class="stat-desc">Annual Conferences</div></div>
-        <div class="stat-card"><div class="stat-num">200+</div><div class="stat-desc">Active Delegates</div></div>
-        <div class="stat-card"><div class="stat-num">12</div><div class="stat-desc">Committees</div></div>
-        <div class="stat-card"><div class="stat-num">15+</div><div class="stat-desc">Partner Schools</div></div>
-      </div>
+    <div class="identity-grid">
+      <div class="id-card"><div class="id-icon">🗺️</div><div class="id-label">Region</div><div class="id-desc">Choose the continent your nation inhabits and how geography shapes your foreign policy.</div></div>
+      <div class="id-card"><div class="id-icon">⚖️</div><div class="id-label">Political System</div><div class="id-desc">From democracy to technocracy — your government defines your voice at every table.</div></div>
+      <div class="id-card"><div class="id-icon">📜</div><div class="id-label">Policies</div><div class="id-desc">Craft your nation's stance on trade, environment, military, and social justice.</div></div>
+      <div class="id-card"><div class="id-icon">⚡</div><div class="id-label">Powers</div><div class="id-desc">Every nation has strengths — military reach, economic clout, tech innovation, soft power.</div></div>
+      <div class="id-card"><div class="id-icon">🌊</div><div class="id-label">Problems</div><div class="id-desc">Great nations face great challenges. Choose the crises your country must overcome.</div></div>
+      <div class="id-card"><div class="id-icon">🤝</div><div class="id-label">UN Bid</div><div class="id-desc">Argue your case before the assembly. Diplomacy, logic, and rhetoric are your weapons.</div></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- NEXT EVENT -->
-  <section id="event">
-    <div class="event-inner">
-      <div class="section-label">Upcoming</div>
-      <h2 class="section-title">The <em>next</em> conference</h2>
-      <div class="event-card">
-        <div>
-          <div class="event-badge">Open for Registration</div>
-          <h3 class="event-title">YDL Spring Summit 2025 — Global Futures Forum</h3>
-          <p style="font-size:0.82rem;color:rgba(255,255,255,0.55);line-height:1.8;font-weight:300;margin-top:0.8rem;">A three-day immersive conference exploring the intersection of technology, geopolitics, and sustainable development. Delegates will represent nations in six specialized committees.</p>
-          <div class="event-meta">
-            <div class="event-meta-item"><div class="meta-icon">📅</div>April 18 – 20, 2025</div>
-            <div class="event-meta-item"><div class="meta-icon">📍</div>Grand Convention Center, Casablanca</div>
-            <div class="event-meta-item"><div class="meta-icon">👥</div>Open to ages 15 – 22</div>
-            <div class="event-meta-item"><div class="meta-icon">🌐</div>English · French</div>
-          </div>
-          <div class="event-cta">
-            <button class="btn-primary" onclick="openModal('auth')">Register Now</button>
-          </div>
+<!-- TOPICS -->
+<section id="topics">
+  <div class="topics-inner">
+    <div class="section-label">Agenda</div>
+    <h2 class="section-title">Conference <em>topics</em></h2>
+    <p style="font-size:0.85rem;color:rgba(255,255,255,0.5);max-width:560px;line-height:1.85;font-weight:300;">The ten agenda topics your fictional nation must engage with. Research them, build positions, and be ready to defend your country's stance in every chamber.</p>
+    <div class="topics-grid">
+      <div class="topic-card"><div class="topic-num">01</div><div><div class="topic-name">Renewable Energy Leadership</div><div class="topic-tag">Climate & Energy</div></div></div>
+      <div class="topic-card"><div class="topic-num">02</div><div><div class="topic-name">Rare Earth Minerals</div><div class="topic-tag">Resources & Trade</div></div></div>
+      <div class="topic-card"><div class="topic-num">03</div><div><div class="topic-name">Global Shipping Ports</div><div class="topic-tag">Maritime & Commerce</div></div></div>
+      <div class="topic-card"><div class="topic-num">04</div><div><div class="topic-name">Agricultural Exports</div><div class="topic-tag">Food Security</div></div></div>
+      <div class="topic-card"><div class="topic-num">05</div><div><div class="topic-name">Artificial Intelligence Research</div><div class="topic-tag">Technology & Ethics</div></div></div>
+      <div class="topic-card"><div class="topic-num">06</div><div><div class="topic-name">Tourism Industry</div><div class="topic-tag">Economy & Culture</div></div></div>
+      <div class="topic-card"><div class="topic-num">07</div><div><div class="topic-name">Pharmaceutical Innovation</div><div class="topic-tag">Health & Science</div></div></div>
+      <div class="topic-card"><div class="topic-num">08</div><div><div class="topic-name">Space Technology</div><div class="topic-tag">Science & Sovereignty</div></div></div>
+      <div class="topic-card"><div class="topic-num">09</div><div><div class="topic-name">Freshwater Reserves</div><div class="topic-tag">Environment & Rights</div></div></div>
+      <div class="topic-card"><div class="topic-num">10</div><div><div class="topic-name">Manufacturing Hubs</div><div class="topic-tag">Industry & Development</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENT -->
+<section id="event">
+  <div class="event-inner">
+    <div class="section-label">Upcoming</div>
+    <h2 class="section-title">The <em>next</em> conference</h2>
+    <div class="event-card">
+      <div>
+        <div class="event-badge">Open for Registration</div>
+        <h3 class="event-title-h">YDL Spring Summit 2025 — Global Futures Forum</h3>
+        <p style="font-size:0.82rem;color:rgba(255,255,255,0.55);line-height:1.8;font-weight:300;margin-top:0.8rem;">A three-day immersive conference where delegates build fictional nations and compete for their seat in the United Nations through debate, diplomacy, and strategy.</p>
+        <div class="event-meta">
+          <div class="event-meta-item"><div class="meta-icon">📅</div>April 18 – 20, 2025</div>
+          <div class="event-meta-item"><div class="meta-icon">📍</div>Grand Convention Center, Casablanca</div>
+          <div class="event-meta-item"><div class="meta-icon">👥</div>Open to ages 15 – 22</div>
+          <div class="event-meta-item"><div class="meta-icon">🌐</div>English · French</div>
         </div>
-        <div>
-          <div class="event-desc">The Global Futures Forum invites delegates to deliberate on critical resolutions spanning artificial intelligence governance, climate refugee frameworks, and multilateral economic reform. Awards will be given across all committees for Best Delegate, Outstanding Delegate, and Honorable Mention.</div>
-          <div class="committees-list">
-            <div class="committees-label">Committees</div>
-            <span class="committee-tag">UN Security Council</span>
-            <span class="committee-tag">UNEP</span>
-            <span class="committee-tag">WHO</span>
-            <span class="committee-tag">UN Women</span>
-            <span class="committee-tag">UNHCR</span>
-            <span class="committee-tag">G20 Simulation</span>
-          </div>
+        <div style="margin-top:2.5rem;"><button class="btn-primary" onclick="openAuthModal()">Register Now</button></div>
+      </div>
+      <div>
+        <p style="font-size:0.87rem;line-height:1.85;color:rgba(255,255,255,0.58);font-weight:300;">Delegates design fictional nations and represent them across six specialized committees, debating 10 agenda topics. The summit culminates in a General Assembly where each nation pleads its case for UN admission.</p>
+        <div style="margin-top:2rem;">
+          <div style="font-size:0.62rem;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:1rem;">Committees</div>
+          <span class="committee-tag">UN Security Council</span><span class="committee-tag">UNEP</span><span class="committee-tag">WHO</span><span class="committee-tag">UN Women</span><span class="committee-tag">UNHCR</span><span class="committee-tag">G20 Simulation</span>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- REGISTER CTA -->
-  <section id="register-cta">
-    <div class="cta-inner">
-      <div class="section-label" style="justify-content:center;">Delegate Portal</div>
-      <h2 class="cta-title">Ready to take the <em>floor?</em></h2>
-      <p class="cta-sub">Create your delegate account to register for upcoming conferences, view your committee assignments, and connect with the YDL community.</p>
-      <button class="btn-primary" onclick="openModal('auth')">Create Delegate Account</button>
-    </div>
-  </section>
+<!-- CTA -->
+<section id="register-cta">
+  <div class="cta-inner">
+    <div class="section-label" style="justify-content:center;">Delegate Portal</div>
+    <h2 class="cta-title">Ready to build your <em>nation?</em></h2>
+    <p class="cta-sub">Create your delegate account, design your fictional country, answer our AI selection interview, and secure your place at the summit.</p>
+    <button class="btn-primary" onclick="openAuthModal()">Begin Registration</button>
+  </div>
+</section>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-copy">© 2025 <span class="footer-gold">YDL</span> — Young Debaters &amp; Leaders. All rights reserved.</div>
-    <div class="footer-copy">Made with purpose · <span class="footer-gold">Casablanca, Morocco</span></div>
-  </footer>
+<footer>
+  <div class="footer-copy">© 2025 <span class="footer-gold">YDL</span> — Young Debaters &amp; Leaders. All rights reserved.</div>
+  <div class="footer-copy">Casablanca, <span class="footer-gold">Morocco</span></div>
+</footer>
 </div>
 
-<!-- DASHBOARD (shown after login) -->
+<!-- DASHBOARD -->
 <div id="dashboard">
   <div class="dash-hero">
     <div class="dash-greeting">Welcome back, Delegate</div>
@@ -549,31 +410,31 @@
   </div>
   <div class="dash-content">
     <div class="dash-grid">
-      <div class="dash-card">
-        <div class="dash-card-title">Next Conference</div>
-        <div class="next-event-name">YDL Spring Summit 2025</div>
-        <div class="event-info-row">📅 April 18 – 20, 2025</div>
-        <div class="event-info-row">📍 Grand Convention Center, Casablanca</div>
-        <div id="reg-status-badge" class="reg-status not-registered">
-          <div class="dot gold"></div> Not Registered
-        </div>
-        <div style="margin-top:1.5rem;">
-          <button class="btn-primary" id="open-event-reg-btn" onclick="openModal('eventReg')">Register for This Event</button>
-        </div>
-        <div id="reg-details" style="display:none;margin-top:1.5rem;border-top:1px solid var(--border);padding-top:1.2rem;">
-          <div style="font-size:0.62rem;letter-spacing:0.15em;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:0.8rem;">Your Registration</div>
-          <div style="font-size:0.78rem;color:rgba(255,255,255,0.7);display:flex;flex-direction:column;gap:0.5rem;" id="reg-summary"></div>
+      <div>
+        <div class="dash-card">
+          <div class="dash-card-title">Next Conference</div>
+          <div class="next-event-name">YDL Spring Summit 2025</div>
+          <div class="event-info-row">📅 April 18 – 20, 2025</div>
+          <div class="event-info-row">📍 Grand Convention Center, Casablanca</div>
+          <div id="reg-badge" class="reg-status not-registered"><div class="dot gold"></div> Not Registered</div>
+          <div id="open-reg-wrap" style="margin-top:1.5rem;">
+            <button class="btn-primary" onclick="openRegModal()">Register &amp; Build My Country</button>
+          </div>
+          <div id="country-wrap" style="display:none;"></div>
+          <div id="reg-details" style="display:none;margin-top:1.5rem;border-top:1px solid var(--border);padding-top:1.2rem;">
+            <div style="font-size:0.62rem;letter-spacing:0.15em;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:0.8rem;">Registration Summary</div>
+            <div id="reg-summary" style="font-size:0.78rem;color:rgba(255,255,255,0.7);display:flex;flex-direction:column;gap:0.5rem;"></div>
+          </div>
         </div>
       </div>
       <div>
         <div class="dash-card" style="margin-bottom:1.5rem;">
           <div class="dash-card-title">Profile</div>
-          <div class="profile-info" id="profile-info">
-            <div class="profile-row"><span class="profile-key">Name</span><span class="profile-val" id="p-name">—</span></div>
-            <div class="profile-row"><span class="profile-key">Email</span><span class="profile-val" id="p-email">—</span></div>
-            <div class="profile-row"><span class="profile-key">School</span><span class="profile-val" id="p-school">—</span></div>
-            <div class="profile-row"><span class="profile-key">Delegate ID</span><span class="profile-val" id="p-id">—</span></div>
-          </div>
+          <div class="profile-row"><span class="profile-key">Name</span><span class="profile-val" id="p-name">—</span></div>
+          <div class="profile-row"><span class="profile-key">Email</span><span class="profile-val" id="p-email">—</span></div>
+          <div class="profile-row"><span class="profile-key">School</span><span class="profile-val" id="p-school">—</span></div>
+          <div class="profile-row"><span class="profile-key">Discord</span><span class="profile-val" id="p-discord">—</span></div>
+          <div class="profile-row"><span class="profile-key">Delegate ID</span><span class="profile-val" id="p-id">—</span></div>
         </div>
         <button class="logout-btn" onclick="logout()">Sign Out</button>
       </div>
@@ -592,46 +453,20 @@
       <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">Sign In</button>
       <button class="tab-btn" id="tab-register" onclick="switchTab('register')">Register</button>
     </div>
-
-    <!-- LOGIN FORM -->
     <div id="form-login">
-      <div class="form-group">
-        <label class="form-label">Email Address</label>
-        <input class="form-input" type="email" id="login-email" placeholder="delegate@ydl.org"/>
-        <div class="form-error" id="login-err">Invalid email or password.</div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input class="form-input" type="password" id="login-pass" placeholder="••••••••"/>
-      </div>
+      <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" type="email" id="login-email" placeholder="delegate@ydl.org"/><div class="form-error" id="login-err">Invalid email or password.</div></div>
+      <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" id="login-pass" placeholder="••••••••"/></div>
       <button class="form-submit" onclick="doLogin()">Sign In</button>
       <div class="form-switch">No account? <a onclick="switchTab('register')">Register as Delegate</a></div>
     </div>
-
-    <!-- REGISTER FORM -->
     <div id="form-register" style="display:none;">
       <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">First Name</label>
-          <input class="form-input" type="text" id="reg-fname" placeholder="Yasmine"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Last Name</label>
-          <input class="form-input" type="text" id="reg-lname" placeholder="El Fassi"/>
-        </div>
+        <div class="form-group"><label class="form-label">First Name</label><input class="form-input" type="text" id="reg-fname" placeholder="Yasmine"/></div>
+        <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text" id="reg-lname" placeholder="El Fassi"/></div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Email Address</label>
-        <input class="form-input" type="email" id="reg-email" placeholder="delegate@school.ma"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">School / Institution</label>
-        <input class="form-input" type="text" id="reg-school" placeholder="Lycée Descartes"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input class="form-input" type="password" id="reg-pass" placeholder="Create a password"/>
-      </div>
+      <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" type="email" id="reg-email" placeholder="delegate@school.ma"/></div>
+      <div class="form-group"><label class="form-label">School / Institution</label><input class="form-input" type="text" id="reg-school" placeholder="Lycée Descartes"/></div>
+      <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" id="reg-pass" placeholder="Create a password"/></div>
       <div class="form-error" id="reg-err">Please fill all fields.</div>
       <button class="form-submit" onclick="doRegister()">Create Account</button>
       <div class="form-switch">Already a member? <a onclick="switchTab('login')">Sign In</a></div>
@@ -640,231 +475,430 @@
 </div>
 
 <!-- EVENT REGISTRATION MODAL -->
-<div class="modal-overlay" id="modal-eventReg">
-  <div class="event-reg-modal">
-    <button class="modal-close" onclick="closeModal('eventReg')">✕</button>
+<div class="modal-overlay" id="modal-reg">
+  <div class="reg-modal">
+    <button class="modal-close" onclick="closeModal('reg')" style="top:1rem;right:1rem;z-index:2;">✕</button>
     <div class="reg-header">
-      <div class="event-badge" style="margin-bottom:1rem;">YDL Spring Summit 2025</div>
-      <h2 class="reg-event-name">Event Registration Form</h2>
-      <div class="reg-event-date">April 18 – 20, 2025 · Casablanca</div>
+      <div class="steps-bar">
+        <div class="s-dot active" id="sd1"></div><div style="width:4px;"></div>
+        <div class="s-dot" id="sd2"></div><div style="width:4px;"></div>
+        <div class="s-dot" id="sd3"></div><div style="width:4px;"></div>
+        <div class="s-dot" id="sd4"></div><div style="width:4px;"></div>
+        <div class="s-dot" id="sd5"></div>
+      </div>
+      <div class="step-meta" id="step-meta">Step 1 of 5</div>
+      <div class="step-heading" id="step-heading">Personal Details</div>
     </div>
-    <hr class="section-divider"/>
-    <div class="reg-section-title">Committee Preferences</div>
-    <div class="form-group">
-      <label class="form-label">First Choice Committee</label>
-      <select class="form-select" id="ev-committee1">
-        <option value="">Select a committee</option>
-        <option>UN Security Council</option>
-        <option>UNEP — Environment</option>
-        <option>WHO — World Health Organization</option>
-        <option>UN Women</option>
-        <option>UNHCR — Refugees</option>
-        <option>G20 Simulation</option>
-      </select>
+
+    <!-- S1: Personal -->
+    <div class="reg-body" id="s1">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Age <span class="req">*</span></label><input class="form-input" type="number" id="ev-age" placeholder="17" min="12" max="30"/></div>
+        <div class="form-group"><label class="form-label">Studies Level <span class="req">*</span></label>
+          <select class="form-select" id="ev-studies"><option value="">Select</option><option>Middle School</option><option>High School — 1ère Bac</option><option>High School — 2ème Bac</option><option>Undergraduate — Year 1</option><option>Undergraduate — Year 2</option><option>Undergraduate — Year 3+</option><option>Graduate / Masters</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Phone Number <span class="req">*</span></label><input class="form-input" type="tel" id="ev-phone" placeholder="+212 6XX XXX XXX"/></div>
+        <div class="form-group"><label class="form-label">Discord Username <span class="req">*</span></label><input class="form-input" type="text" id="ev-discord" placeholder="username#0000"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">1st Committee Choice <span class="req">*</span></label>
+          <select class="form-select" id="ev-c1"><option value="">Select</option><option>UN Security Council</option><option>UNEP — Environment</option><option>WHO</option><option>UN Women</option><option>UNHCR — Refugees</option><option>G20 Simulation</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">2nd Committee Choice <span class="req">*</span></label>
+          <select class="form-select" id="ev-c2"><option value="">Select</option><option>UN Security Council</option><option>UNEP — Environment</option><option>WHO</option><option>UN Women</option><option>UNHCR — Refugees</option><option>G20 Simulation</option></select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">MUN Experience Level <span class="req">*</span></label>
+        <select class="form-select" id="ev-exp"><option value="">Select</option><option>Beginner — First conference</option><option>Intermediate — 1–3 conferences</option><option>Advanced — 4+ conferences</option><option>Expert — Chair/Staff experience</option></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Are you willing to be active and speak in debates? <span class="req">*</span></label>
+        <div class="radio-group">
+          <div class="radio-item"><input type="radio" id="active-yes" name="active" value="Yes"/><label for="active-yes">Yes, absolutely</label></div>
+          <div class="radio-item"><input type="radio" id="active-maybe" name="active" value="Mostly yes"/><label for="active-maybe">Mostly yes</label></div>
+          <div class="radio-item"><input type="radio" id="active-no" name="active" value="I will observe more"/><label for="active-no">I will observe more</label></div>
+        </div>
+      </div>
+      <div class="form-error" id="e1"></div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Second Choice Committee</label>
-      <select class="form-select" id="ev-committee2">
-        <option value="">Select a committee</option>
-        <option>UN Security Council</option>
-        <option>UNEP — Environment</option>
-        <option>WHO — World Health Organization</option>
-        <option>UN Women</option>
-        <option>UNHCR — Refugees</option>
-        <option>G20 Simulation</option>
-      </select>
+
+    <!-- S2: Country Identity -->
+    <div class="reg-body" id="s2" style="display:none;">
+      <div class="form-group">
+        <label class="form-label">Country Name <span class="req">*</span></label>
+        <input class="form-input" type="text" id="ev-cname" placeholder="e.g. Valdoria, Aerentis, Kessoran…" oninput="scheduleCheck()"/>
+        <div class="name-status" id="nstatus"></div>
+        <div class="input-hint">Do not use existing country names, numbers, or offensive terms. AI validates your choice in real time.</div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Region / Continent <span class="req">*</span></label>
+          <select class="form-select" id="ev-region"><option value="">Select</option><option>Africa</option><option>Asia-Pacific</option><option>Europe</option><option>North America</option><option>South America</option><option>Middle East</option><option>Oceania</option><option>Arctic / Polar</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">Political System <span class="req">*</span></label>
+          <select class="form-select" id="ev-polsys"><option value="">Select</option><option>Liberal Democracy</option><option>Constitutional Monarchy</option><option>Federal Republic</option><option>Theocracy</option><option>Oligarchy</option><option>Socialist State</option><option>Technocracy</option><option>Direct Democracy</option><option>Authoritarian Republic</option><option>Confederation</option></select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Policies <span class="req">*</span> <span style="font-size:0.57rem;color:rgba(255,255,255,0.3);">choose at least 2</span></label>
+        <div class="check-group">
+          <div class="check-item"><input type="checkbox" id="p1" name="policies" value="Free Trade"/><label for="p1">Free Trade</label></div>
+          <div class="check-item"><input type="checkbox" id="p2" name="policies" value="Protectionism"/><label for="p2">Protectionism</label></div>
+          <div class="check-item"><input type="checkbox" id="p3" name="policies" value="Green Economy"/><label for="p3">Green Economy</label></div>
+          <div class="check-item"><input type="checkbox" id="p4" name="policies" value="Military Expansion"/><label for="p4">Military Expansion</label></div>
+          <div class="check-item"><input type="checkbox" id="p5" name="policies" value="Pacifism"/><label for="p5">Pacifism</label></div>
+          <div class="check-item"><input type="checkbox" id="p6" name="policies" value="Open Borders"/><label for="p6">Open Borders</label></div>
+          <div class="check-item"><input type="checkbox" id="p7" name="policies" value="Universal Healthcare"/><label for="p7">Universal Healthcare</label></div>
+          <div class="check-item"><input type="checkbox" id="p8" name="policies" value="Tech Innovation"/><label for="p8">Tech Innovation</label></div>
+          <div class="check-item"><input type="checkbox" id="p9" name="policies" value="Religious Law"/><label for="p9">Religious Law</label></div>
+          <div class="check-item"><input type="checkbox" id="p10" name="policies" value="Space Program"/><label for="p10">Space Program</label></div>
+          <div class="check-item"><input type="checkbox" id="p11" name="policies" value="Nuclear Energy"/><label for="p11">Nuclear Energy</label></div>
+          <div class="check-item"><input type="checkbox" id="p12" name="policies" value="Social Equality"/><label for="p12">Social Equality</label></div>
+        </div>
+      </div>
+      <div class="form-error" id="e2"></div>
     </div>
-    <hr class="section-divider"/>
-    <div class="reg-section-title">Country Preference</div>
-    <div class="form-group">
-      <label class="form-label">Preferred Country / Bloc to Represent</label>
-      <input class="form-input" type="text" id="ev-country" placeholder="e.g. France, African Union, Germany…"/>
+
+    <!-- S3: Powers & Problems -->
+    <div class="reg-body" id="s3" style="display:none;">
+      <div class="form-group">
+        <label class="form-label">National Powers <span class="req">*</span> <span style="font-size:0.57rem;color:rgba(255,255,255,0.3);">choose 1–3</span></label>
+        <div class="check-group">
+          <div class="check-item"><input type="checkbox" id="pw1" name="powers" value="Military Superpower"/><label for="pw1">Military Superpower</label></div>
+          <div class="check-item"><input type="checkbox" id="pw2" name="powers" value="Economic Giant"/><label for="pw2">Economic Giant</label></div>
+          <div class="check-item"><input type="checkbox" id="pw3" name="powers" value="Tech Innovation Hub"/><label for="pw3">Tech Innovation Hub</label></div>
+          <div class="check-item"><input type="checkbox" id="pw4" name="powers" value="Cultural Influence"/><label for="pw4">Cultural Influence</label></div>
+          <div class="check-item"><input type="checkbox" id="pw5" name="powers" value="Natural Resources"/><label for="pw5">Natural Resources</label></div>
+          <div class="check-item"><input type="checkbox" id="pw6" name="powers" value="Diplomatic Prestige"/><label for="pw6">Diplomatic Prestige</label></div>
+          <div class="check-item"><input type="checkbox" id="pw7" name="powers" value="Renewable Energy Leader"/><label for="pw7">Renewable Energy</label></div>
+          <div class="check-item"><input type="checkbox" id="pw8" name="powers" value="Maritime Power"/><label for="pw8">Maritime Power</label></div>
+          <div class="check-item"><input type="checkbox" id="pw9" name="powers" value="Agricultural Exporter"/><label for="pw9">Agricultural Exporter</label></div>
+          <div class="check-item"><input type="checkbox" id="pw10" name="powers" value="Space Technology"/><label for="pw10">Space Technology</label></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">National Problems <span class="req">*</span> <span style="font-size:0.57rem;color:rgba(255,255,255,0.3);">choose 1–3</span></label>
+        <div class="check-group">
+          <div class="check-item"><input type="checkbox" id="pr1" name="problems" value="Political Corruption"/><label for="pr1">Corruption</label></div>
+          <div class="check-item"><input type="checkbox" id="pr2" name="problems" value="Extreme Poverty"/><label for="pr2">Extreme Poverty</label></div>
+          <div class="check-item"><input type="checkbox" id="pr3" name="problems" value="Climate Vulnerability"/><label for="pr3">Climate Crisis</label></div>
+          <div class="check-item"><input type="checkbox" id="pr4" name="problems" value="Civil Conflict"/><label for="pr4">Civil Conflict</label></div>
+          <div class="check-item"><input type="checkbox" id="pr5" name="problems" value="Food Insecurity"/><label for="pr5">Food Insecurity</label></div>
+          <div class="check-item"><input type="checkbox" id="pr6" name="problems" value="Brain Drain"/><label for="pr6">Brain Drain</label></div>
+          <div class="check-item"><input type="checkbox" id="pr7" name="problems" value="Water Scarcity"/><label for="pr7">Water Scarcity</label></div>
+          <div class="check-item"><input type="checkbox" id="pr8" name="problems" value="Debt Crisis"/><label for="pr8">Debt Crisis</label></div>
+          <div class="check-item"><input type="checkbox" id="pr9" name="problems" value="Refugee Crisis"/><label for="pr9">Refugee Crisis</label></div>
+          <div class="check-item"><input type="checkbox" id="pr10" name="problems" value="Authoritarianism"/><label for="pr10">Authoritarianism</label></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Why do you want to participate? <span class="req">*</span></label>
+        <textarea class="form-textarea" id="ev-why" placeholder="Tell us genuinely why you want to join this summit and what you hope to achieve for your nation…"></textarea>
+      </div>
+      <div class="form-error" id="e3"></div>
     </div>
-    <hr class="section-divider"/>
-    <div class="reg-section-title">Experience & Background</div>
-    <div class="form-group">
-      <label class="form-label">MUN Experience Level</label>
-      <select class="form-select" id="ev-experience">
-        <option value="">Select level</option>
-        <option>Beginner — First conference</option>
-        <option>Intermediate — 1–3 conferences</option>
-        <option>Advanced — 4+ conferences</option>
-        <option>Expert — Chair/Staff experience</option>
-      </select>
+
+    <!-- S4: AI Interview -->
+    <div class="reg-body" id="s4" style="display:none;">
+      <p style="font-size:0.78rem;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:1.5rem;">Our AI moderator has generated <strong style="color:rgba(255,255,255,0.8);">3 personalized selection questions</strong> based on your country profile. Answer seriously — vague or lazy answers will affect your admission status.</p>
+      <div id="ai-area"><div class="ai-loading"><div class="ai-dots"><span></span><span></span><span></span></div><span>Generating your selection questions…</span></div></div>
+      <div class="form-error" id="e4"></div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Topic of Interest / Why This Conference?</label>
-      <textarea class="form-textarea" id="ev-motivation" placeholder="Tell us briefly what you hope to achieve at this summit…"></textarea>
+
+    <!-- S5: Done -->
+    <div class="reg-body" id="s5" style="display:none;text-align:center;padding-top:3rem;padding-bottom:3rem;">
+      <div style="width:60px;height:60px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 1.5rem;">🌍</div>
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;margin-bottom:0.8rem;">Application Submitted</h3>
+      <p style="font-size:0.78rem;color:rgba(255,255,255,0.5);line-height:1.7;max-width:400px;margin:0 auto 1.5rem;" id="done-msg">Your profile and responses have been received.</p>
+      <div id="verdict-area"></div>
+      <button class="btn-primary" style="margin-top:2rem;" onclick="closeModal('reg');showDashboard();">Go to My Dashboard</button>
     </div>
-    <div class="form-error" id="ev-err">Please complete all required fields.</div>
-    <button class="form-submit" onclick="doEventRegister()">Submit Registration</button>
+
+    <div class="reg-foot" id="reg-foot">
+      <button class="btn-back" id="btn-back" onclick="prevStep()" style="visibility:hidden;">← Back</button>
+      <button class="btn-next" id="btn-next" onclick="nextStep()">Continue →</button>
+    </div>
   </div>
 </div>
 
-<!-- TOAST -->
-<div class="toast" id="toast">
-  <div class="toast-title" id="toast-title">Success</div>
-  <div class="toast-msg" id="toast-msg">Action completed.</div>
-</div>
+<div class="toast" id="toast"><div class="toast-title" id="toast-title">Success</div><div class="toast-msg" id="toast-msg"></div></div>
 
 <script>
-  // ── STORAGE HELPERS ──
-  function getUsers() { try { return JSON.parse(localStorage.getItem('ydl_users') || '{}'); } catch(e){ return {}; } }
-  function saveUsers(u) { localStorage.setItem('ydl_users', JSON.stringify(u)); }
-  function getSession() { try { return JSON.parse(localStorage.getItem('ydl_session') || 'null'); } catch(e){ return null; } }
-  function setSession(u) { localStorage.setItem('ydl_session', JSON.stringify(u)); }
-  function clearSession() { localStorage.removeItem('ydl_session'); }
-  function getRegistrations() { try { return JSON.parse(localStorage.getItem('ydl_regs') || '{}'); } catch(e){ return {}; } }
-  function saveRegistrations(r) { localStorage.setItem('ydl_regs', JSON.stringify(r)); }
+const API='https://api.anthropic.com/v1/messages';
+const MDL='claude-sonnet-4-20250514';
 
-  function genId() { return 'YDL-' + Math.random().toString(36).substring(2,6).toUpperCase() + '-' + Date.now().toString(36).slice(-3).toUpperCase(); }
+async function ai(sys,user,max=600){
+  try{
+    const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MDL,max_tokens:max,system:sys,messages:[{role:'user',content:user}]})});
+    const d=await r.json(); return d.content?.[0]?.text||'';
+  }catch(e){return '';}
+}
 
-  // ── MODAL ──
-  function openModal(name) { document.getElementById('modal-' + name).classList.add('active'); document.body.style.overflow = 'hidden'; }
-  function closeModal(name) { document.getElementById('modal-' + name).classList.remove('active'); document.body.style.overflow = ''; }
-  document.querySelectorAll('.modal-overlay').forEach(el => { el.addEventListener('click', function(e){ if(e.target===this) { this.classList.remove('active'); document.body.style.overflow=''; } }); });
+// Storage
+const getU=()=>{try{return JSON.parse(localStorage.getItem('ydl_u')||'{}');}catch{return{};}};
+const saveU=u=>localStorage.setItem('ydl_u',JSON.stringify(u));
+const getS=()=>{try{return JSON.parse(localStorage.getItem('ydl_s')||'null');}catch{return null;}};
+const setS=u=>localStorage.setItem('ydl_s',JSON.stringify(u));
+const clearS=()=>localStorage.removeItem('ydl_s');
+const getR=()=>{try{return JSON.parse(localStorage.getItem('ydl_r')||'{}');}catch{return{};}};
+const saveR=r=>localStorage.setItem('ydl_r',JSON.stringify(r));
+const genId=()=>'YDL-'+Math.random().toString(36).substring(2,6).toUpperCase()+'-'+Date.now().toString(36).slice(-3).toUpperCase();
 
-  // ── TABS ──
-  function switchTab(tab) {
-    document.getElementById('form-login').style.display = tab==='login' ? '' : 'none';
-    document.getElementById('form-register').style.display = tab==='register' ? '' : 'none';
-    document.getElementById('tab-login').classList.toggle('active', tab==='login');
-    document.getElementById('tab-register').classList.toggle('active', tab==='register');
-    document.getElementById('auth-title').textContent = tab==='login' ? 'Delegate Portal' : 'Join YDL';
-    document.getElementById('auth-sub').textContent = tab==='login' ? 'Sign in to your account' : 'Create your delegate account';
-    hideErr('login-err'); hideErr('reg-err');
+// Modal
+function openModal(n){document.getElementById('modal-'+n).classList.add('active');document.body.style.overflow='hidden';}
+function closeModal(n){document.getElementById('modal-'+n).classList.remove('active');document.body.style.overflow='';}
+document.querySelectorAll('.modal-overlay').forEach(el=>{el.addEventListener('click',function(e){if(e.target===this){this.classList.remove('active');document.body.style.overflow='';}});});
+function openAuthModal(){openModal('auth');}
+function openRegModal(){resetReg();openModal('reg');}
+
+// Auth
+function switchTab(t){
+  document.getElementById('form-login').style.display=t==='login'?'':'none';
+  document.getElementById('form-register').style.display=t==='register'?'':'none';
+  document.getElementById('tab-login').classList.toggle('active',t==='login');
+  document.getElementById('tab-register').classList.toggle('active',t==='register');
+  document.getElementById('auth-title').textContent=t==='login'?'Delegate Portal':'Join YDL';
+  document.getElementById('auth-sub').textContent=t==='login'?'Sign in to your account':'Create your delegate account';
+  hideE('login-err');hideE('reg-err');
+}
+function showE(id,msg){const e=document.getElementById(id);if(msg)e.textContent=msg;e.classList.add('show');}
+function hideE(id){document.getElementById(id).classList.remove('show');}
+
+function doRegister(){
+  hideE('reg-err');
+  const fn=document.getElementById('reg-fname').value.trim(),ln=document.getElementById('reg-lname').value.trim();
+  const em=document.getElementById('reg-email').value.trim().toLowerCase(),sc=document.getElementById('reg-school').value.trim();
+  const pw=document.getElementById('reg-pass').value;
+  if(!fn||!ln||!em||!sc||!pw){showE('reg-err','Please fill all fields.');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){showE('reg-err','Invalid email.');return;}
+  if(pw.length<6){showE('reg-err','Password must be 6+ characters.');return;}
+  const users=getU();
+  if(users[em]){showE('reg-err','Email already registered.');return;}
+  const d={fname:fn,lname:ln,email:em,school:sc,pass:pw,id:genId()};
+  users[em]=d;saveU(users);setS(d);closeModal('auth');loadDashboard(d);
+  showToast('Account Created!','Welcome to YDL, '+fn+'!');
+}
+function doLogin(){
+  hideE('login-err');
+  const em=document.getElementById('login-email').value.trim().toLowerCase();
+  const pw=document.getElementById('login-pass').value;
+  const u=getU();
+  if(!u[em]||u[em].pass!==pw){showE('login-err','Invalid email or password.');return;}
+  setS(u[em]);closeModal('auth');loadDashboard(u[em]);
+  showToast('Welcome Back!','Good to see you, '+u[em].fname+'.');
+}
+
+// Multi-step
+let step=1; const STEPS=5;
+let nameOk=false,nameTimer=null,aiQs=[],aiAs=[];
+
+const LABELS=['Personal Details','Country Identity','Powers & Problems','AI Selection Interview','Confirmation'];
+
+function resetReg(){
+  step=1;nameOk=false;aiQs=[];aiAs=[];
+  document.getElementById('nstatus').innerHTML='';
+  document.getElementById('ev-cname').value='';
+  document.getElementById('ev-cname').classList.remove('input-ok','input-bad');
+  updateStepUI();
+}
+
+function updateStepUI(){
+  for(let i=1;i<=STEPS;i++){
+    const b=document.getElementById('s'+i);if(b)b.style.display=i===step?'':'none';
+    const d=document.getElementById('sd'+i);
+    if(d)d.className='s-dot'+(i<step?' done':i===step?' active':'');
   }
-  function showErr(id, msg) { const el = document.getElementById(id); el.textContent = msg||el.textContent; el.classList.add('show'); }
-  function hideErr(id) { document.getElementById(id).classList.remove('show'); }
+  document.getElementById('step-meta').textContent='Step '+step+' of '+STEPS;
+  document.getElementById('step-heading').textContent=LABELS[step-1];
+  const back=document.getElementById('btn-back'),next=document.getElementById('btn-next'),foot=document.getElementById('reg-foot');
+  back.style.visibility=step>1?'visible':'hidden';
+  foot.style.display=step===STEPS?'none':'flex';
+  next.textContent=step===4?'Submit Application →':'Continue →';
+  next.disabled=false;
+}
 
-  // ── REGISTER ──
-  function doRegister() {
-    hideErr('reg-err');
-    const fname = document.getElementById('reg-fname').value.trim();
-    const lname = document.getElementById('reg-lname').value.trim();
-    const email = document.getElementById('reg-email').value.trim().toLowerCase();
-    const school = document.getElementById('reg-school').value.trim();
-    const pass = document.getElementById('reg-pass').value;
-    if (!fname||!lname||!email||!school||!pass) { showErr('reg-err','Please fill all fields.'); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('reg-err','Please enter a valid email.'); return; }
-    if (pass.length < 6) { showErr('reg-err','Password must be at least 6 characters.'); return; }
-    const users = getUsers();
-    if (users[email]) { showErr('reg-err','This email is already registered.'); return; }
-    const delegate = { fname, lname, email, school, pass, id: genId() };
-    users[email] = delegate;
-    saveUsers(users);
-    setSession(delegate);
-    closeModal('auth');
-    loadDashboard(delegate);
-    showToast('Account Created!', 'Welcome to YDL, ' + fname + '!');
+function checked(name){return Array.from(document.querySelectorAll('input[name="'+name+'"]:checked')).map(c=>c.value);}
+function radioVal(name){const el=document.querySelector('input[name="'+name+'"]:checked');return el?el.value:'';}
+
+function validate(s){
+  hideE('e'+s);
+  if(s===1){
+    const age=document.getElementById('ev-age').value,st=document.getElementById('ev-studies').value;
+    const ph=document.getElementById('ev-phone').value.trim(),dc=document.getElementById('ev-discord').value.trim();
+    const c1=document.getElementById('ev-c1').value,c2=document.getElementById('ev-c2').value;
+    const ex=document.getElementById('ev-exp').value,ac=radioVal('active');
+    if(!age||!st||!ph||!dc||!c1||!c2||!ex||!ac){showE('e1','Please complete all fields.');return false;}
+    return true;
   }
-
-  // ── LOGIN ──
-  function doLogin() {
-    hideErr('login-err');
-    const email = document.getElementById('login-email').value.trim().toLowerCase();
-    const pass = document.getElementById('login-pass').value;
-    const users = getUsers();
-    if (!users[email] || users[email].pass !== pass) { showErr('login-err','Invalid email or password.'); return; }
-    setSession(users[email]);
-    closeModal('auth');
-    loadDashboard(users[email]);
-    showToast('Welcome Back!', 'Good to see you, ' + users[email].fname + '.');
+  if(s===2){
+    const cn=document.getElementById('ev-cname').value.trim(),rg=document.getElementById('ev-region').value,ps=document.getElementById('ev-polsys').value;
+    const po=checked('policies');
+    if(!cn||!rg||!ps){showE('e2','Please fill all country fields.');return false;}
+    if(po.length<2){showE('e2','Select at least 2 policies.');return false;}
+    if(!nameOk){showE('e2','Please wait for name validation to complete.');return false;}
+    return true;
   }
-
-  // ── EVENT REGISTER ──
-  function doEventRegister() {
-    hideErr('ev-err');
-    const c1 = document.getElementById('ev-committee1').value;
-    const c2 = document.getElementById('ev-committee2').value;
-    const country = document.getElementById('ev-country').value.trim();
-    const exp = document.getElementById('ev-experience').value;
-    if (!c1||!c2||!country||!exp) { showErr('ev-err','Please complete all required fields.'); return; }
-    const session = getSession();
-    const regs = getRegistrations();
-    regs[session.email] = { committee1: c1, committee2: c2, country, experience: exp, motivation: document.getElementById('ev-motivation').value.trim(), registeredAt: new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}) };
-    saveRegistrations(regs);
-    closeModal('eventReg');
-    updateRegStatus(session);
-    showToast('Registration Submitted!', 'You\'re registered for YDL Spring Summit 2025.');
+  if(s===3){
+    const pw=checked('powers'),pr=checked('problems'),why=document.getElementById('ev-why').value.trim();
+    if(pw.length<1||pw.length>3){showE('e3','Choose 1 to 3 national powers.');return false;}
+    if(pr.length<1||pr.length>3){showE('e3','Choose 1 to 3 national problems.');return false;}
+    if(!why||why.length<30){showE('e3','Please write at least a sentence about why you want to participate.');return false;}
+    return true;
   }
-
-  // ── DASHBOARD ──
-  function loadDashboard(user) {
-    document.getElementById('main-site').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
-    document.getElementById('nav-login-btn').style.display = 'none';
-    document.getElementById('nav-delegate-btn').style.display = 'block';
-    document.getElementById('dash-name').textContent = user.fname + ' ' + user.lname;
-    document.getElementById('dash-id').textContent = 'Delegate ID: ' + user.id;
-    document.getElementById('p-name').textContent = user.fname + ' ' + user.lname;
-    document.getElementById('p-email').textContent = user.email;
-    document.getElementById('p-school').textContent = user.school;
-    document.getElementById('p-id').textContent = user.id;
-    updateRegStatus(user);
-    window.scrollTo(0,0);
+  if(s===4){
+    if(aiQs.length<3){showE('e4','Questions not loaded yet.');return false;}
+    const allDone=aiAs.every((a,i)=>a&&a.trim().length>20);
+    if(!allDone){showE('e4','Please answer all 3 questions with thoughtful responses.');return false;}
+    return true;
   }
+  return true;
+}
 
-  function showDashboard() {
-    const session = getSession();
-    if (session) loadDashboard(session);
-  }
+async function nextStep(){
+  if(!validate(step))return;
+  if(step===3){step=4;updateStepUI();await loadAI();return;}
+  if(step===4){await submitApp();return;}
+  step++;updateStepUI();
+}
+function prevStep(){if(step>1){step--;updateStepUI();}}
 
-  function updateRegStatus(user) {
-    const regs = getRegistrations();
-    const reg = regs[user.email];
-    const badge = document.getElementById('reg-status-badge');
-    const regDetails = document.getElementById('reg-details');
-    const btn = document.getElementById('open-event-reg-btn');
-    if (reg) {
-      badge.className = 'reg-status registered';
-      badge.innerHTML = '<div class="dot green"></div> Registered';
-      btn.style.display = 'none';
-      regDetails.style.display = 'block';
-      document.getElementById('reg-summary').innerHTML =
-        '<div><span style="color:rgba(255,255,255,0.45)">1st Choice: </span>' + reg.committee1 + '</div>' +
-        '<div><span style="color:rgba(255,255,255,0.45)">2nd Choice: </span>' + reg.committee2 + '</div>' +
-        '<div><span style="color:rgba(255,255,255,0.45)">Country: </span>' + reg.country + '</div>' +
-        '<div><span style="color:rgba(255,255,255,0.45)">Experience: </span>' + reg.experience + '</div>' +
-        '<div style="margin-top:0.3rem;font-size:0.65rem;color:rgba(255,255,255,0.3)">Submitted: ' + reg.registeredAt + '</div>';
-    } else {
-      badge.className = 'reg-status not-registered';
-      badge.innerHTML = '<div class="dot gold"></div> Not Registered';
-      btn.style.display = '';
-      regDetails.style.display = 'none';
-    }
-  }
+// Name check
+function scheduleCheck(){
+  nameOk=false;
+  const ns=document.getElementById('nstatus');ns.innerHTML='';
+  clearTimeout(nameTimer);
+  const v=document.getElementById('ev-cname').value.trim();
+  if(v.length<2)return;
+  nameTimer=setTimeout(()=>checkName(v),1000);
+}
+async function checkName(name){
+  const ns=document.getElementById('nstatus'),inp=document.getElementById('ev-cname');
+  ns.className='name-status checking';
+  ns.innerHTML='<div class="ndot checking"></div> Checking name…';
+  inp.classList.remove('input-ok','input-bad');
+  const sys=`You are a country name validator. Respond ONLY with JSON {"ok":true/false,"reason":"short reason"}. ok=true only if: completely fictional (no real country/territory/well-known fictional place), no numbers, no offensive/racist/rude terms in ANY language, at least 3 letters. If any rule fails, ok=false.`;
+  const txt=await ai(sys,`Validate country name: "${name}"`,150);
+  try{
+    const j=JSON.parse(txt.replace(/```json|```/g,'').trim());
+    if(j.ok){ns.className='name-status ok';ns.innerHTML='<div class="ndot ok"></div> Name validated!';inp.classList.add('input-ok');nameOk=true;}
+    else{ns.className='name-status fail';ns.innerHTML='<div class="ndot fail"></div> '+j.reason;inp.classList.add('input-bad');nameOk=false;}
+  }catch{ns.className='name-status ok';ns.innerHTML='<div class="ndot ok"></div> Name accepted.';nameOk=true;}
+}
 
-  // ── LOGOUT ──
-  function logout() {
-    clearSession();
-    document.getElementById('dashboard').style.display = 'none';
-    document.getElementById('main-site').style.display = 'block';
-    document.getElementById('nav-login-btn').style.display = 'block';
-    document.getElementById('nav-delegate-btn').style.display = 'none';
-    window.scrollTo(0,0);
-    showToast('Signed Out', 'See you at the next session.', 'warn');
-  }
-
-  // ── TOAST ──
-  let toastTimer;
-  function showToast(title, msg) {
-    const t = document.getElementById('toast');
-    document.getElementById('toast-title').textContent = title;
-    document.getElementById('toast-msg').textContent = msg;
-    t.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
-  }
-
-  // ── INIT ──
-  window.addEventListener('DOMContentLoaded', () => {
-    const session = getSession();
-    if (session) {
-      document.getElementById('nav-login-btn').style.display = 'none';
-      document.getElementById('nav-delegate-btn').style.display = 'block';
-    }
+// AI Questions
+async function loadAI(){
+  const area=document.getElementById('ai-area');
+  area.innerHTML='<div class="ai-loading"><div class="ai-dots"><span></span><span></span><span></span></div><span>Generating your selection questions…</span></div>';
+  document.getElementById('btn-next').disabled=true;
+  const cn=document.getElementById('ev-cname').value.trim(),rg=document.getElementById('ev-region').value;
+  const ps=document.getElementById('ev-polsys').value,po=checked('policies').join(', ');
+  const pw=checked('powers').join(', '),pr=checked('problems').join(', ');
+  const ex=document.getElementById('ev-exp').value,why=document.getElementById('ev-why').value.trim();
+  const ac=radioVal('active');
+  const sys=`You are a strict, serious YDL MUN selection committee moderator. Generate exactly 3 personalized selection interview questions in JSON: {"questions":["Q1","Q2","Q3"]}. Rules: questions must be serious and realistic, tailored to this specific country profile, test genuine commitment and intellectual preparation, require thoughtful answers of 2-3 sentences minimum. DO NOT ask generic questions. Probe their country concept specifically. Return ONLY valid JSON.`;
+  const prompt=`Fictional country: "${cn}" | Region: ${rg} | Political system: ${ps} | Policies: ${po} | Powers: ${pw} | Problems: ${pr} | Experience: ${ex} | Active in debates: ${ac} | Why they want to participate: "${why}"`;
+  const resp=await ai(sys,prompt,500);
+  let qs=['Why did you choose this specific combination of policies and powers for your country, and how will they shape your approach to the agenda topics?','Your country faces the problems you selected — how will these weaknesses affect your alliances and negotiation strategy during debates?','Describe one concrete position your nation will take on one of the 10 conference topics, and explain the reasoning behind it.'];
+  try{const j=JSON.parse(resp.replace(/```json|```/g,'').trim());if(j.questions&&j.questions.length===3)qs=j.questions;}catch{}
+  aiQs=qs;aiAs=['','',''];
+  let html='';
+  qs.forEach((q,i)=>{
+    html+=`<div class="q-card"><div class="q-label">Question ${i+1} of 3</div><div class="q-text">${q}</div><textarea class="form-textarea" style="min-height:85px;" placeholder="Write your answer here — be specific and serious…" oninput="aiAs[${i}]=this.value"></textarea></div>`;
   });
+  area.innerHTML=html;
+  document.getElementById('btn-next').disabled=false;
+}
+
+// Submit
+async function submitApp(){
+  if(!validate(4))return;
+  const nb=document.getElementById('btn-next');
+  nb.disabled=true;nb.textContent='Evaluating…';
+  const cn=document.getElementById('ev-cname').value.trim(),rg=document.getElementById('ev-region').value;
+  const ps=document.getElementById('ev-polsys').value,po=checked('policies');
+  const pw=checked('powers'),pr=checked('problems');
+  const sys=`You are a strict YDL MUN selection committee evaluator. Evaluate the interview answers and return ONLY JSON: {"verdict":"accepted"|"review"|"rejected","label":"Accepted"|"Pending Review"|"Not Selected","summary":"2-3 honest sentences about commitment level, answer quality, and suitability"}. Be genuinely strict: accepted=serious thoughtful answers showing real preparation; review=some interest but lacks depth; rejected=superficial, lazy, or disengaged answers.`;
+  const pairs=aiQs.map((q,i)=>`Q: ${q}\nA: ${aiAs[i]}`).join('\n\n');
+  const prompt=`Country: ${cn} (${rg}, ${ps}) | Policies: ${po.join(', ')} | Powers: ${pw.join(', ')} | Problems: ${pr.join(', ')}\n\n${pairs}`;
+  const resp=await ai(sys,prompt,350);
+  let v={verdict:'review',label:'Pending Review',summary:'Your application has been received and will be reviewed by our team.'};
+  try{const j=JSON.parse(resp.replace(/```json|```/g,'').trim());if(j.verdict)v=j;}catch{}
+  const s=getS(),regs=getR();
+  regs[s.email]={
+    age:document.getElementById('ev-age').value,studies:document.getElementById('ev-studies').value,
+    phone:document.getElementById('ev-phone').value,discord:document.getElementById('ev-discord').value,
+    c1:document.getElementById('ev-c1').value,c2:document.getElementById('ev-c2').value,
+    exp:document.getElementById('ev-exp').value,active:radioVal('active'),
+    countryName:cn,region:rg,polsys:ps,policies:po,powers:pw,problems:pr,
+    why:document.getElementById('ev-why').value.trim(),
+    aiQs,aiAs,verdict:v.verdict,verdictLabel:v.label,verdictSummary:v.summary,
+    registeredAt:new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})
+  };
+  saveR(regs);
+  step=5;updateStepUI();
+  const icons={accepted:'✅',review:'⏳',rejected:'❌'};
+  document.getElementById('done-msg').textContent=v.verdict==='accepted'?'Congratulations! Your application has been accepted. Check your Discord and email for next steps.':'Your country profile and interview responses have been submitted. Our team will review your application.';
+  document.getElementById('verdict-area').innerHTML=`<div class="verdict-box ${v.verdict}"><div class="v-icon">${icons[v.verdict]||'📋'}</div><div><div class="v-label ${v.verdict}">${v.label}</div><div class="v-text">${v.verdictSummary}</div></div></div>`;
+  updateRegStatus(s);
+  showToast('Application Submitted!','Your nation '+cn+' has been registered.');
+}
+
+// Dashboard
+function loadDashboard(u){
+  document.getElementById('main-site').style.display='none';
+  document.getElementById('dashboard').style.display='block';
+  document.getElementById('nav-login-btn').style.display='none';
+  document.getElementById('nav-delegate-btn').style.display='block';
+  document.getElementById('dash-name').textContent=u.fname+' '+u.lname;
+  document.getElementById('dash-id').textContent='Delegate ID: '+u.id;
+  document.getElementById('p-name').textContent=u.fname+' '+u.lname;
+  document.getElementById('p-email').textContent=u.email;
+  document.getElementById('p-school').textContent=u.school;
+  document.getElementById('p-discord').textContent=u.discord||'—';
+  document.getElementById('p-id').textContent=u.id;
+  updateRegStatus(u);window.scrollTo(0,0);
+}
+function showDashboard(){const s=getS();if(s)loadDashboard(s);}
+
+function updateRegStatus(u){
+  const r=getR()[u.email];
+  const badge=document.getElementById('reg-badge');
+  const orw=document.getElementById('open-reg-wrap');
+  const cw=document.getElementById('country-wrap');
+  const rd=document.getElementById('reg-details');
+  if(r){
+    const vc={accepted:'registered',review:'pending',rejected:'not-registered'};
+    const vd={accepted:'green',review:'amber',rejected:'gold'};
+    badge.className='reg-status '+(vc[r.verdict]||'pending');
+    badge.innerHTML='<div class="dot '+(vd[r.verdict]||'amber')+'"></div> '+(r.verdictLabel||'Submitted');
+    orw.style.display='none';
+    cw.style.display='block';
+    cw.innerHTML=`<div class="country-banner"><div class="country-name-display">${r.countryName}</div><div class="country-meta-small">${r.region} · ${r.polsys}</div></div>`;
+    rd.style.display='block';
+    document.getElementById('reg-summary').innerHTML=
+      `<div><span style="color:rgba(255,255,255,0.45)">Country: </span>${r.countryName}</div>`+
+      `<div><span style="color:rgba(255,255,255,0.45)">Region: </span>${r.region} · ${r.polsys}</div>`+
+      `<div><span style="color:rgba(255,255,255,0.45)">Policies: </span>${(r.policies||[]).join(', ')}</div>`+
+      `<div><span style="color:rgba(255,255,255,0.45)">Powers: </span>${(r.powers||[]).join(', ')}</div>`+
+      `<div><span style="color:rgba(255,255,255,0.45)">Problems: </span>${(r.problems||[]).join(', ')}</div>`+
+      `<div><span style="color:rgba(255,255,255,0.45)">Committee 1st: </span>${r.c1}</div>`+
+      `<div><span style="color:rgba(255,255,255,0.45)">Discord: </span>${r.discord}</div>`+
+      `<div><span style="color:rgba(255,255,255,0.45)">Active in debates: </span>${r.active}</div>`+
+      `<div style="margin-top:0.3rem;font-size:0.65rem;color:rgba(255,255,255,0.3)">Submitted: ${r.registeredAt}</div>`;
+  } else {
+    badge.className='reg-status not-registered';
+    badge.innerHTML='<div class="dot gold"></div> Not Registered';
+    orw.style.display='';cw.style.display='none';rd.style.display='none';
+  }
+}
+
+function logout(){clearS();document.getElementById('dashboard').style.display='none';document.getElementById('main-site').style.display='block';document.getElementById('nav-login-btn').style.display='block';document.getElementById('nav-delegate-btn').style.display='none';window.scrollTo(0,0);showToast('Signed Out','See you at the next session.');}
+
+let toastT;
+function showToast(t,m){const el=document.getElementById('toast');document.getElementById('toast-title').textContent=t;document.getElementById('toast-msg').textContent=m;el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),4000);}
+
+window.addEventListener('DOMContentLoaded',()=>{const s=getS();if(s){document.getElementById('nav-login-btn').style.display='none';document.getElementById('nav-delegate-btn').style.display='block';}});
 </script>
 </body>
 </html>
