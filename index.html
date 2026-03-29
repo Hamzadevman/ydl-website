@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>YDL — Young Debaters & Leaders</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #122040;
+    --navy-light: #1c3260;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-pale: #f5e8c4;
+    --cream: #faf7f0;
+    --white: #ffffff;
+    --text-muted: #8a94a6;
+    --border: rgba(201,168,76,0.25);
+    --danger: #c0392b;
+    --success: #1a7a4a;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Josefin Sans', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--navy); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(10,22,40,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 14px; text-decoration: none;
+  }
+  .nav-emblem {
+    width: 42px; height: 42px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; font-weight: 600;
+    color: var(--gold); letter-spacing: 0.05em;
+    position: relative;
+  }
+  .nav-emblem::before {
+    content: '';
+    position: absolute; inset: 3px;
+    border: 1px solid rgba(201,168,76,0.35);
+    border-radius: 50%;
+  }
+  .nav-brand { display: flex; flex-direction: column; line-height: 1; }
+  .nav-brand-main { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.22em; color: var(--white); }
+  .nav-brand-sub { font-size: 0.6rem; letter-spacing: 0.18em; color: var(--gold); font-weight: 300; margin-top: 2px; }
+  .nav-links { display: flex; align-items: center; gap: 2.5rem; }
+  .nav-links a {
+    text-decoration: none; font-size: 0.72rem; letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.7); text-transform: uppercase; font-weight: 400;
+    transition: color 0.2s; position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 1px;
+    background: var(--gold); transform: scaleX(0); transition: transform 0.25s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-btn {
+    background: transparent; border: 1px solid var(--gold); color: var(--gold);
+    padding: 0.55rem 1.4rem; font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.25s; font-weight: 600;
+  }
+  .nav-btn:hover { background: var(--gold); color: var(--navy); }
+  #nav-delegate-btn { display: none; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; text-align: center; padding: 8rem 2rem 4rem;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(28,50,96,0.8) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(201,168,76,0.08) 0%, transparent 60%),
+      linear-gradient(180deg, #0a1628 0%, #122040 50%, #0a1628 100%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(201,168,76,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 70%);
+  }
+  .hero-circle {
+    position: absolute; border-radius: 50%; border: 1px solid rgba(201,168,76,0.12);
+    animation: pulseRing 8s ease-in-out infinite;
+  }
+  .hero-circle:nth-child(1) { width: 400px; height: 400px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 0s; }
+  .hero-circle:nth-child(2) { width: 600px; height: 600px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 1.5s; }
+  .hero-circle:nth-child(3) { width: 800px; height: 800px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 3s; }
+  @keyframes pulseRing { 0%,100% { opacity: 0.15; } 50% { opacity: 0.5; } }
+
+  .hero-content { position: relative; z-index: 1; max-width: 800px; }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.65rem; letter-spacing: 0.28em; color: var(--gold);
+    text-transform: uppercase; margin-bottom: 2rem; font-weight: 400;
+  }
+  .hero-tag::before, .hero-tag::after {
+    content: ''; display: block; width: 30px; height: 1px; background: var(--gold);
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 300; line-height: 0.95; letter-spacing: -0.01em;
+    margin-bottom: 1.2rem;
+  }
+  .hero-title span { color: var(--gold); font-style: italic; }
+  .hero-subtitle {
+    font-size: 0.75rem; letter-spacing: 0.22em; color: rgba(255,255,255,0.55);
+    text-transform: uppercase; margin-bottom: 3.5rem; font-weight: 300;
+    line-height: 2;
+  }
+  .hero-actions { display: flex; align-items: center; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--gold); color: var(--navy);
+    padding: 0.9rem 2.5rem; font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    cursor: pointer; border: none; font-weight: 700; transition: all 0.25s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.8);
+    padding: 0.9rem 2.5rem; font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    cursor: pointer; font-weight: 400; transition: all 0.25s;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;
+    font-size: 0.6rem; letter-spacing: 0.2em; color: rgba(255,255,255,0.4);
+  }
+  .scroll-line {
+    width: 1px; height: 40px; background: linear-gradient(180deg, rgba(201,168,76,0.6), transparent);
+    animation: scrollDown 2s ease-in-out infinite;
+  }
+  @keyframes scrollDown { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+  /* ── SECTION BASE ── */
+  section { padding: 7rem 4rem; }
+  .section-label {
+    font-size: 0.62rem; letter-spacing: 0.3em; color: var(--gold);
+    text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::before { content: ''; display: block; width: 24px; height: 1px; background: var(--gold); }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 300; line-height: 1.15;
+    margin-bottom: 1.5rem;
+  }
+  .section-title em { color: var(--gold); font-style: italic; }
+
+  /* ── ABOUT ── */
+  #about { background: var(--navy-mid); }
+  .about-grid {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+  }
+  .about-text p {
+    font-size: 0.92rem; line-height: 1.9; color: rgba(255,255,255,0.65);
+    margin-bottom: 1.2rem; font-weight: 300;
+  }
+  .about-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+  }
+  .stat-card {
+    border: 1px solid var(--border); padding: 1.8rem 1.5rem;
+    position: relative; overflow: hidden;
+  }
+  .stat-card::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%;
+    background: var(--gold);
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif; font-size: 2.8rem;
+    font-weight: 300; color: var(--gold); line-height: 1;
+  }
+  .stat-desc { font-size: 0.65rem; letter-spacing: 0.15em; color: rgba(255,255,255,0.5); margin-top: 0.5rem; text-transform: uppercase; }
+
+  /* ── NEXT EVENT ── */
+  #event { background: var(--navy); position: relative; overflow: hidden; }
+  #event::before {
+    content: 'EVENT'; position: absolute; right: -2rem; top: 50%; transform: translateY(-50%);
+    font-family: 'Cormorant Garamond', serif; font-size: 18rem; font-weight: 600;
+    color: rgba(201,168,76,0.03); line-height: 1; pointer-events: none; z-index: 0;
+    letter-spacing: -0.05em;
+  }
+  .event-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+  .event-card {
+    border: 1px solid var(--border); padding: 3.5rem;
+    display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: start;
+    background: rgba(28,50,96,0.2); position: relative;
+  }
+  .event-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+  .event-badge {
+    display: inline-block; background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold); font-size: 0.6rem; letter-spacing: 0.2em;
+    padding: 0.4rem 1rem; text-transform: uppercase; margin-bottom: 1.5rem;
+  }
+  .event-title {
+    font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300;
+    line-height: 1.2; margin-bottom: 1rem;
+  }
+  .event-meta { display: flex; flex-direction: column; gap: 0.7rem; margin-top: 1.5rem; }
+  .event-meta-item { display: flex; align-items: center; gap: 10px; font-size: 0.75rem; color: rgba(255,255,255,0.6); letter-spacing: 0.05em; }
+  .meta-icon { width: 18px; height: 18px; border: 1px solid rgba(201,168,76,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.55rem; color: var(--gold); flex-shrink: 0; }
+  .event-desc { font-size: 0.88rem; line-height: 1.85; color: rgba(255,255,255,0.6); font-weight: 300; }
+  .committees-list { margin-top: 2rem; }
+  .committees-label { font-size: 0.62rem; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; margin-bottom: 1rem; }
+  .committee-tag {
+    display: inline-block; border: 1px solid rgba(201,168,76,0.25);
+    font-size: 0.62rem; letter-spacing: 0.12em; padding: 0.35rem 0.85rem;
+    color: rgba(255,255,255,0.7); margin: 0.25rem 0.25rem 0 0; text-transform: uppercase;
+  }
+  .event-cta { margin-top: 2.5rem; }
+
+  /* ── REGISTER CTA ── */
+  #register-cta {
+    text-align: center; background: var(--navy-mid);
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    padding: 5rem 2rem;
+  }
+  .cta-inner { max-width: 600px; margin: 0 auto; }
+  .cta-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; margin-bottom: 1rem; }
+  .cta-sub { font-size: 0.75rem; letter-spacing: 0.12em; color: rgba(255,255,255,0.5); margin-bottom: 2.5rem; line-height: 1.8; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: rgba(6,13,25,0.98); padding: 3rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid var(--border); flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-copy { font-size: 0.65rem; letter-spacing: 0.12em; color: rgba(255,255,255,0.3); }
+  .footer-gold { color: var(--gold); }
+
+  /* ── MODAL OVERLAY ── */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(6,13,25,0.92);
+    backdrop-filter: blur(6px);
+    display: none; align-items: center; justify-content: center; padding: 2rem;
+    overflow-y: auto;
+  }
+  .modal-overlay.active { display: flex; }
+
+  /* ── AUTH MODAL ── */
+  .auth-modal {
+    background: var(--navy-mid); border: 1px solid var(--border);
+    width: 100%; max-width: 460px; position: relative;
+    padding: 3rem;
+  }
+  .auth-modal::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+  .modal-close {
+    position: absolute; top: 1.2rem; right: 1.2rem;
+    background: none; border: none; color: rgba(255,255,255,0.4); font-size: 1.3rem;
+    cursor: pointer; transition: color 0.2s; line-height: 1;
+  }
+  .modal-close:hover { color: var(--gold); }
+  .modal-emblem {
+    width: 50px; height: 50px; border: 2px solid var(--gold); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600;
+    color: var(--gold); margin-bottom: 1.8rem;
+  }
+  .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; margin-bottom: 0.4rem; }
+  .modal-sub { font-size: 0.7rem; letter-spacing: 0.12em; color: rgba(255,255,255,0.4); margin-bottom: 2rem; }
+  .tab-row { display: flex; gap: 0; margin-bottom: 2rem; border-bottom: 1px solid var(--border); }
+  .tab-btn {
+    flex: 1; background: none; border: none; color: rgba(255,255,255,0.4);
+    font-family: 'Josefin Sans', sans-serif; font-size: 0.68rem; letter-spacing: 0.18em;
+    text-transform: uppercase; padding: 0.8rem 0; cursor: pointer; transition: all 0.2s;
+    border-bottom: 2px solid transparent; margin-bottom: -1px; font-weight: 400;
+  }
+  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* ── FORM STYLES ── */
+  .form-group { margin-bottom: 1.3rem; }
+  .form-label { display: block; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 0.5rem; }
+  .form-input, .form-select, .form-textarea {
+    width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(201,168,76,0.2);
+    color: var(--white); font-family: 'Josefin Sans', sans-serif; font-size: 0.85rem;
+    padding: 0.75rem 1rem; outline: none; transition: border-color 0.2s; letter-spacing: 0.05em;
+    appearance: none;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold); background: rgba(201,168,76,0.05); }
+  .form-input::placeholder { color: rgba(255,255,255,0.25); font-size: 0.8rem; }
+  .form-select option { background: var(--navy-mid); color: var(--white); }
+  .form-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-submit {
+    width: 100%; background: var(--gold); color: var(--navy);
+    padding: 0.85rem; font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    cursor: pointer; border: none; font-weight: 700; transition: all 0.25s; margin-top: 0.5rem;
+  }
+  .form-submit:hover { background: var(--gold-light); }
+  .form-error { font-size: 0.68rem; color: #e07070; margin-top: 0.4rem; display: none; }
+  .form-error.show { display: block; }
+  .form-switch { font-size: 0.68rem; color: rgba(255,255,255,0.4); text-align: center; margin-top: 1.2rem; }
+  .form-switch a { color: var(--gold); text-decoration: none; cursor: pointer; }
+
+  /* ── EVENT REGISTRATION MODAL ── */
+  .event-reg-modal {
+    background: var(--navy-mid); border: 1px solid var(--border);
+    width: 100%; max-width: 600px; position: relative; padding: 3rem;
+  }
+  .event-reg-modal::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+  .reg-header { margin-bottom: 2rem; }
+  .reg-event-name {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; margin-bottom: 0.4rem;
+  }
+  .reg-event-date { font-size: 0.65rem; letter-spacing: 0.18em; color: var(--gold); text-transform: uppercase; }
+  .section-divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+  .reg-section-title { font-size: 0.65rem; letter-spacing: 0.2em; color: rgba(255,255,255,0.5); text-transform: uppercase; margin-bottom: 1.2rem; }
+
+  /* ── DASHBOARD ── */
+  #dashboard { display: none; }
+  .dash-hero {
+    min-height: 35vh; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end;
+    padding: 8rem 4rem 3rem;
+    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-mid) 100%);
+    border-bottom: 1px solid var(--border); position: relative; overflow: hidden;
+  }
+  .dash-hero::after {
+    content: ''; position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+  .dash-greeting { font-size: 0.65rem; letter-spacing: 0.22em; color: var(--gold); text-transform: uppercase; margin-bottom: 0.7rem; position: relative; z-index: 1; }
+  .dash-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; position: relative; z-index: 1; }
+  .dash-sub { font-size: 0.72rem; color: rgba(255,255,255,0.45); margin-top: 0.5rem; letter-spacing: 0.08em; position: relative; z-index: 1; }
+  .dash-content { max-width: 1100px; margin: 0 auto; padding: 3rem 4rem; }
+  .dash-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
+  .dash-card {
+    border: 1px solid var(--border); padding: 2rem; position: relative; overflow: hidden;
+  }
+  .dash-card::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%;
+    background: var(--gold);
+  }
+  .dash-card-title { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+  .next-event-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; margin-bottom: 0.8rem; }
+  .event-info-row { display: flex; align-items: center; gap: 8px; font-size: 0.72rem; color: rgba(255,255,255,0.55); margin-bottom: 0.5rem; }
+  .reg-status {
+    display: inline-flex; align-items: center; gap: 6px; margin-top: 1.2rem;
+    font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.4rem 0.9rem; border: 1px solid;
+  }
+  .reg-status.registered { border-color: rgba(26,122,74,0.5); color: #4cd994; background: rgba(26,122,74,0.1); }
+  .reg-status.not-registered { border-color: rgba(201,168,76,0.3); color: var(--gold); background: rgba(201,168,76,0.05); }
+  .dot { width: 7px; height: 7px; border-radius: 50%; }
+  .dot.green { background: #4cd994; }
+  .dot.gold { background: var(--gold); }
+  .profile-info { display: flex; flex-direction: column; gap: 1rem; }
+  .profile-row { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0; border-bottom: 1px solid rgba(201,168,76,0.1); }
+  .profile-row:last-child { border-bottom: none; }
+  .profile-key { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+  .profile-val { font-size: 0.8rem; color: rgba(255,255,255,0.85); }
+  .logout-btn {
+    background: none; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.4);
+    font-family: 'Josefin Sans', sans-serif; font-size: 0.65rem; letter-spacing: 0.15em;
+    text-transform: uppercase; padding: 0.5rem 1.2rem; cursor: pointer; transition: all 0.2s; margin-top: 1.5rem;
+  }
+  .logout-btn:hover { border-color: var(--danger); color: #e07070; }
+
+  /* ── SUCCESS / TOAST ── */
+  .toast {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
+    background: var(--navy-mid); border: 1px solid rgba(76,217,148,0.4);
+    padding: 1rem 1.5rem; max-width: 340px; transform: translateY(100px);
+    opacity: 0; transition: all 0.4s; border-left: 3px solid #4cd994;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast-title { font-size: 0.72rem; font-weight: 600; color: #4cd994; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.25rem; }
+  .toast-msg { font-size: 0.72rem; color: rgba(255,255,255,0.6); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .event-card { grid-template-columns: 1fr; gap: 2rem; }
+    .dash-grid { grid-template-columns: 1fr; }
+    .dash-content { padding: 2rem 1.5rem; }
+    .dash-hero { padding: 7rem 1.5rem 2.5rem; }
+    footer { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .auth-modal, .event-reg-modal { padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a class="nav-logo" href="#hero">
+    <div class="nav-emblem">YDL</div>
+    <div class="nav-brand">
+      <span class="nav-brand-main">YDL</span>
+      <span class="nav-brand-sub">Young Debaters & Leaders</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#event">Next Event</a>
+    <a href="#" onclick="openModal('auth'); return false;">Delegates</a>
+  </div>
+  <button class="nav-btn" id="nav-login-btn" onclick="openModal('auth')">Delegate Portal</button>
+  <button class="nav-btn" id="nav-delegate-btn" onclick="showDashboard()">My Dashboard</button>
+</nav>
+
+<!-- HERO -->
+<div id="main-site">
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-circle"></div>
+    <div class="hero-circle"></div>
+    <div class="hero-circle"></div>
+    <div class="hero-content">
+      <div class="hero-tag">Model United Nations</div>
+      <h1 class="hero-title">Young<br><span>Debaters</span><br>& Leaders</h1>
+      <p class="hero-subtitle">Shaping tomorrow's diplomats · Building bridges · Inspiring change</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="openModal('auth')">Join as Delegate</button>
+        <button class="btn-secondary" onclick="document.getElementById('event').scrollIntoView({behavior:'smooth'})">Next Conference</button>
+      </div>
+    </div>
+    <div class="hero-scroll"><div class="scroll-line"></div>Scroll</div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-label">Who We Are</div>
+        <h2 class="section-title">Forging the voices of <em>tomorrow</em></h2>
+        <p>YDL is a premier Model United Nations club dedicated to empowering young minds with the art of diplomacy, negotiation, and leadership. We believe every great leader starts by learning to listen.</p>
+        <p>Our conferences bring together passionate delegates to tackle the world's most pressing challenges — from climate policy to global security — in a structured, professional, and intellectually stimulating environment.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-card"><div class="stat-num">6+</div><div class="stat-desc">Annual Conferences</div></div>
+        <div class="stat-card"><div class="stat-num">200+</div><div class="stat-desc">Active Delegates</div></div>
+        <div class="stat-card"><div class="stat-num">12</div><div class="stat-desc">Committees</div></div>
+        <div class="stat-card"><div class="stat-num">15+</div><div class="stat-desc">Partner Schools</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEXT EVENT -->
+  <section id="event">
+    <div class="event-inner">
+      <div class="section-label">Upcoming</div>
+      <h2 class="section-title">The <em>next</em> conference</h2>
+      <div class="event-card">
+        <div>
+          <div class="event-badge">Open for Registration</div>
+          <h3 class="event-title">YDL Spring Summit 2025 — Global Futures Forum</h3>
+          <p style="font-size:0.82rem;color:rgba(255,255,255,0.55);line-height:1.8;font-weight:300;margin-top:0.8rem;">A three-day immersive conference exploring the intersection of technology, geopolitics, and sustainable development. Delegates will represent nations in six specialized committees.</p>
+          <div class="event-meta">
+            <div class="event-meta-item"><div class="meta-icon">📅</div>April 18 – 20, 2025</div>
+            <div class="event-meta-item"><div class="meta-icon">📍</div>Grand Convention Center, Casablanca</div>
+            <div class="event-meta-item"><div class="meta-icon">👥</div>Open to ages 15 – 22</div>
+            <div class="event-meta-item"><div class="meta-icon">🌐</div>English · French</div>
+          </div>
+          <div class="event-cta">
+            <button class="btn-primary" onclick="openModal('auth')">Register Now</button>
+          </div>
+        </div>
+        <div>
+          <div class="event-desc">The Global Futures Forum invites delegates to deliberate on critical resolutions spanning artificial intelligence governance, climate refugee frameworks, and multilateral economic reform. Awards will be given across all committees for Best Delegate, Outstanding Delegate, and Honorable Mention.</div>
+          <div class="committees-list">
+            <div class="committees-label">Committees</div>
+            <span class="committee-tag">UN Security Council</span>
+            <span class="committee-tag">UNEP</span>
+            <span class="committee-tag">WHO</span>
+            <span class="committee-tag">UN Women</span>
+            <span class="committee-tag">UNHCR</span>
+            <span class="committee-tag">G20 Simulation</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGISTER CTA -->
+  <section id="register-cta">
+    <div class="cta-inner">
+      <div class="section-label" style="justify-content:center;">Delegate Portal</div>
+      <h2 class="cta-title">Ready to take the <em>floor?</em></h2>
+      <p class="cta-sub">Create your delegate account to register for upcoming conferences, view your committee assignments, and connect with the YDL community.</p>
+      <button class="btn-primary" onclick="openModal('auth')">Create Delegate Account</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-copy">© 2025 <span class="footer-gold">YDL</span> — Young Debaters &amp; Leaders. All rights reserved.</div>
+    <div class="footer-copy">Made with purpose · <span class="footer-gold">Casablanca, Morocco</span></div>
+  </footer>
+</div>
+
+<!-- DASHBOARD (shown after login) -->
+<div id="dashboard">
+  <div class="dash-hero">
+    <div class="dash-greeting">Welcome back, Delegate</div>
+    <div class="dash-name" id="dash-name">—</div>
+    <div class="dash-sub" id="dash-id">Delegate ID: —</div>
+  </div>
+  <div class="dash-content">
+    <div class="dash-grid">
+      <div class="dash-card">
+        <div class="dash-card-title">Next Conference</div>
+        <div class="next-event-name">YDL Spring Summit 2025</div>
+        <div class="event-info-row">📅 April 18 – 20, 2025</div>
+        <div class="event-info-row">📍 Grand Convention Center, Casablanca</div>
+        <div id="reg-status-badge" class="reg-status not-registered">
+          <div class="dot gold"></div> Not Registered
+        </div>
+        <div style="margin-top:1.5rem;">
+          <button class="btn-primary" id="open-event-reg-btn" onclick="openModal('eventReg')">Register for This Event</button>
+        </div>
+        <div id="reg-details" style="display:none;margin-top:1.5rem;border-top:1px solid var(--border);padding-top:1.2rem;">
+          <div style="font-size:0.62rem;letter-spacing:0.15em;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:0.8rem;">Your Registration</div>
+          <div style="font-size:0.78rem;color:rgba(255,255,255,0.7);display:flex;flex-direction:column;gap:0.5rem;" id="reg-summary"></div>
+        </div>
+      </div>
+      <div>
+        <div class="dash-card" style="margin-bottom:1.5rem;">
+          <div class="dash-card-title">Profile</div>
+          <div class="profile-info" id="profile-info">
+            <div class="profile-row"><span class="profile-key">Name</span><span class="profile-val" id="p-name">—</span></div>
+            <div class="profile-row"><span class="profile-key">Email</span><span class="profile-val" id="p-email">—</span></div>
+            <div class="profile-row"><span class="profile-key">School</span><span class="profile-val" id="p-school">—</span></div>
+            <div class="profile-row"><span class="profile-key">Delegate ID</span><span class="profile-val" id="p-id">—</span></div>
+          </div>
+        </div>
+        <button class="logout-btn" onclick="logout()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="modal-auth">
+  <div class="auth-modal">
+    <button class="modal-close" onclick="closeModal('auth')">✕</button>
+    <div class="modal-emblem">YDL</div>
+    <h2 class="modal-title" id="auth-title">Delegate Portal</h2>
+    <p class="modal-sub" id="auth-sub">Sign in to your account</p>
+    <div class="tab-row">
+      <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">Sign In</button>
+      <button class="tab-btn" id="tab-register" onclick="switchTab('register')">Register</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="form-login">
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" id="login-email" placeholder="delegate@ydl.org"/>
+        <div class="form-error" id="login-err">Invalid email or password.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" id="login-pass" placeholder="••••••••"/>
+      </div>
+      <button class="form-submit" onclick="doLogin()">Sign In</button>
+      <div class="form-switch">No account? <a onclick="switchTab('register')">Register as Delegate</a></div>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="form-register" style="display:none;">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input class="form-input" type="text" id="reg-fname" placeholder="Yasmine"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input class="form-input" type="text" id="reg-lname" placeholder="El Fassi"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" id="reg-email" placeholder="delegate@school.ma"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">School / Institution</label>
+        <input class="form-input" type="text" id="reg-school" placeholder="Lycée Descartes"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" id="reg-pass" placeholder="Create a password"/>
+      </div>
+      <div class="form-error" id="reg-err">Please fill all fields.</div>
+      <button class="form-submit" onclick="doRegister()">Create Account</button>
+      <div class="form-switch">Already a member? <a onclick="switchTab('login')">Sign In</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- EVENT REGISTRATION MODAL -->
+<div class="modal-overlay" id="modal-eventReg">
+  <div class="event-reg-modal">
+    <button class="modal-close" onclick="closeModal('eventReg')">✕</button>
+    <div class="reg-header">
+      <div class="event-badge" style="margin-bottom:1rem;">YDL Spring Summit 2025</div>
+      <h2 class="reg-event-name">Event Registration Form</h2>
+      <div class="reg-event-date">April 18 – 20, 2025 · Casablanca</div>
+    </div>
+    <hr class="section-divider"/>
+    <div class="reg-section-title">Committee Preferences</div>
+    <div class="form-group">
+      <label class="form-label">First Choice Committee</label>
+      <select class="form-select" id="ev-committee1">
+        <option value="">Select a committee</option>
+        <option>UN Security Council</option>
+        <option>UNEP — Environment</option>
+        <option>WHO — World Health Organization</option>
+        <option>UN Women</option>
+        <option>UNHCR — Refugees</option>
+        <option>G20 Simulation</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Second Choice Committee</label>
+      <select class="form-select" id="ev-committee2">
+        <option value="">Select a committee</option>
+        <option>UN Security Council</option>
+        <option>UNEP — Environment</option>
+        <option>WHO — World Health Organization</option>
+        <option>UN Women</option>
+        <option>UNHCR — Refugees</option>
+        <option>G20 Simulation</option>
+      </select>
+    </div>
+    <hr class="section-divider"/>
+    <div class="reg-section-title">Country Preference</div>
+    <div class="form-group">
+      <label class="form-label">Preferred Country / Bloc to Represent</label>
+      <input class="form-input" type="text" id="ev-country" placeholder="e.g. France, African Union, Germany…"/>
+    </div>
+    <hr class="section-divider"/>
+    <div class="reg-section-title">Experience & Background</div>
+    <div class="form-group">
+      <label class="form-label">MUN Experience Level</label>
+      <select class="form-select" id="ev-experience">
+        <option value="">Select level</option>
+        <option>Beginner — First conference</option>
+        <option>Intermediate — 1–3 conferences</option>
+        <option>Advanced — 4+ conferences</option>
+        <option>Expert — Chair/Staff experience</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Topic of Interest / Why This Conference?</label>
+      <textarea class="form-textarea" id="ev-motivation" placeholder="Tell us briefly what you hope to achieve at this summit…"></textarea>
+    </div>
+    <div class="form-error" id="ev-err">Please complete all required fields.</div>
+    <button class="form-submit" onclick="doEventRegister()">Submit Registration</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-title" id="toast-title">Success</div>
+  <div class="toast-msg" id="toast-msg">Action completed.</div>
+</div>
+
+<script>
+  // ── STORAGE HELPERS ──
+  function getUsers() { try { return JSON.parse(localStorage.getItem('ydl_users') || '{}'); } catch(e){ return {}; } }
+  function saveUsers(u) { localStorage.setItem('ydl_users', JSON.stringify(u)); }
+  function getSession() { try { return JSON.parse(localStorage.getItem('ydl_session') || 'null'); } catch(e){ return null; } }
+  function setSession(u) { localStorage.setItem('ydl_session', JSON.stringify(u)); }
+  function clearSession() { localStorage.removeItem('ydl_session'); }
+  function getRegistrations() { try { return JSON.parse(localStorage.getItem('ydl_regs') || '{}'); } catch(e){ return {}; } }
+  function saveRegistrations(r) { localStorage.setItem('ydl_regs', JSON.stringify(r)); }
+
+  function genId() { return 'YDL-' + Math.random().toString(36).substring(2,6).toUpperCase() + '-' + Date.now().toString(36).slice(-3).toUpperCase(); }
+
+  // ── MODAL ──
+  function openModal(name) { document.getElementById('modal-' + name).classList.add('active'); document.body.style.overflow = 'hidden'; }
+  function closeModal(name) { document.getElementById('modal-' + name).classList.remove('active'); document.body.style.overflow = ''; }
+  document.querySelectorAll('.modal-overlay').forEach(el => { el.addEventListener('click', function(e){ if(e.target===this) { this.classList.remove('active'); document.body.style.overflow=''; } }); });
+
+  // ── TABS ──
+  function switchTab(tab) {
+    document.getElementById('form-login').style.display = tab==='login' ? '' : 'none';
+    document.getElementById('form-register').style.display = tab==='register' ? '' : 'none';
+    document.getElementById('tab-login').classList.toggle('active', tab==='login');
+    document.getElementById('tab-register').classList.toggle('active', tab==='register');
+    document.getElementById('auth-title').textContent = tab==='login' ? 'Delegate Portal' : 'Join YDL';
+    document.getElementById('auth-sub').textContent = tab==='login' ? 'Sign in to your account' : 'Create your delegate account';
+    hideErr('login-err'); hideErr('reg-err');
+  }
+  function showErr(id, msg) { const el = document.getElementById(id); el.textContent = msg||el.textContent; el.classList.add('show'); }
+  function hideErr(id) { document.getElementById(id).classList.remove('show'); }
+
+  // ── REGISTER ──
+  function doRegister() {
+    hideErr('reg-err');
+    const fname = document.getElementById('reg-fname').value.trim();
+    const lname = document.getElementById('reg-lname').value.trim();
+    const email = document.getElementById('reg-email').value.trim().toLowerCase();
+    const school = document.getElementById('reg-school').value.trim();
+    const pass = document.getElementById('reg-pass').value;
+    if (!fname||!lname||!email||!school||!pass) { showErr('reg-err','Please fill all fields.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('reg-err','Please enter a valid email.'); return; }
+    if (pass.length < 6) { showErr('reg-err','Password must be at least 6 characters.'); return; }
+    const users = getUsers();
+    if (users[email]) { showErr('reg-err','This email is already registered.'); return; }
+    const delegate = { fname, lname, email, school, pass, id: genId() };
+    users[email] = delegate;
+    saveUsers(users);
+    setSession(delegate);
+    closeModal('auth');
+    loadDashboard(delegate);
+    showToast('Account Created!', 'Welcome to YDL, ' + fname + '!');
+  }
+
+  // ── LOGIN ──
+  function doLogin() {
+    hideErr('login-err');
+    const email = document.getElementById('login-email').value.trim().toLowerCase();
+    const pass = document.getElementById('login-pass').value;
+    const users = getUsers();
+    if (!users[email] || users[email].pass !== pass) { showErr('login-err','Invalid email or password.'); return; }
+    setSession(users[email]);
+    closeModal('auth');
+    loadDashboard(users[email]);
+    showToast('Welcome Back!', 'Good to see you, ' + users[email].fname + '.');
+  }
+
+  // ── EVENT REGISTER ──
+  function doEventRegister() {
+    hideErr('ev-err');
+    const c1 = document.getElementById('ev-committee1').value;
+    const c2 = document.getElementById('ev-committee2').value;
+    const country = document.getElementById('ev-country').value.trim();
+    const exp = document.getElementById('ev-experience').value;
+    if (!c1||!c2||!country||!exp) { showErr('ev-err','Please complete all required fields.'); return; }
+    const session = getSession();
+    const regs = getRegistrations();
+    regs[session.email] = { committee1: c1, committee2: c2, country, experience: exp, motivation: document.getElementById('ev-motivation').value.trim(), registeredAt: new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}) };
+    saveRegistrations(regs);
+    closeModal('eventReg');
+    updateRegStatus(session);
+    showToast('Registration Submitted!', 'You\'re registered for YDL Spring Summit 2025.');
+  }
+
+  // ── DASHBOARD ──
+  function loadDashboard(user) {
+    document.getElementById('main-site').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('nav-login-btn').style.display = 'none';
+    document.getElementById('nav-delegate-btn').style.display = 'block';
+    document.getElementById('dash-name').textContent = user.fname + ' ' + user.lname;
+    document.getElementById('dash-id').textContent = 'Delegate ID: ' + user.id;
+    document.getElementById('p-name').textContent = user.fname + ' ' + user.lname;
+    document.getElementById('p-email').textContent = user.email;
+    document.getElementById('p-school').textContent = user.school;
+    document.getElementById('p-id').textContent = user.id;
+    updateRegStatus(user);
+    window.scrollTo(0,0);
+  }
+
+  function showDashboard() {
+    const session = getSession();
+    if (session) loadDashboard(session);
+  }
+
+  function updateRegStatus(user) {
+    const regs = getRegistrations();
+    const reg = regs[user.email];
+    const badge = document.getElementById('reg-status-badge');
+    const regDetails = document.getElementById('reg-details');
+    const btn = document.getElementById('open-event-reg-btn');
+    if (reg) {
+      badge.className = 'reg-status registered';
+      badge.innerHTML = '<div class="dot green"></div> Registered';
+      btn.style.display = 'none';
+      regDetails.style.display = 'block';
+      document.getElementById('reg-summary').innerHTML =
+        '<div><span style="color:rgba(255,255,255,0.45)">1st Choice: </span>' + reg.committee1 + '</div>' +
+        '<div><span style="color:rgba(255,255,255,0.45)">2nd Choice: </span>' + reg.committee2 + '</div>' +
+        '<div><span style="color:rgba(255,255,255,0.45)">Country: </span>' + reg.country + '</div>' +
+        '<div><span style="color:rgba(255,255,255,0.45)">Experience: </span>' + reg.experience + '</div>' +
+        '<div style="margin-top:0.3rem;font-size:0.65rem;color:rgba(255,255,255,0.3)">Submitted: ' + reg.registeredAt + '</div>';
+    } else {
+      badge.className = 'reg-status not-registered';
+      badge.innerHTML = '<div class="dot gold"></div> Not Registered';
+      btn.style.display = '';
+      regDetails.style.display = 'none';
+    }
+  }
+
+  // ── LOGOUT ──
+  function logout() {
+    clearSession();
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('main-site').style.display = 'block';
+    document.getElementById('nav-login-btn').style.display = 'block';
+    document.getElementById('nav-delegate-btn').style.display = 'none';
+    window.scrollTo(0,0);
+    showToast('Signed Out', 'See you at the next session.', 'warn');
+  }
+
+  // ── TOAST ──
+  let toastTimer;
+  function showToast(title, msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toast-title').textContent = title;
+    document.getElementById('toast-msg').textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  // ── INIT ──
+  window.addEventListener('DOMContentLoaded', () => {
+    const session = getSession();
+    if (session) {
+      document.getElementById('nav-login-btn').style.display = 'none';
+      document.getElementById('nav-delegate-btn').style.display = 'block';
+    }
+  });
+</script>
+</body>
+</html>
